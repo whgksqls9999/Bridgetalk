@@ -21,8 +21,8 @@ export async function postSendTalk(reportsId: number, audio: Blob, setReply: any
   // webm => mp3 변환
   await ffmpeg.writeFile('input.webm', newFileData);
   console.log('{posetSendTalk: writeFile}');
-  await ffmpeg.exec(['-i', 'input.webm', '-vn', '-ab', '192k', 'output.mp3']);
-  console.log('{posetSendTalk: exec}');
+  const exec = await ffmpeg.exec(['-i', 'input.webm', '-vn', '-ab', '192k', 'output.mp3']);
+  console.log('{posetSendTalk: exec}', exec);
   const data: any = await ffmpeg.readFile('output.mp3');
   console.log('{posetSendTalk: readFile}');
   const newBlob = new Blob([data.buffer], { type: 'audio/mpeg' });

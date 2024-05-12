@@ -65,7 +65,7 @@ export const ParentReportDetailRecorder = memo(() => {
       volumeCheckInterval = generateVolumeCheckInterval(analyser, dataArray, bufferLength, setVolume);
 
       // 녹음 시작
-      startRecordVoice(streamRef, recorderRef, audioDataRef);
+      startRecordVoice(streamRef, recorderRef, audioDataRef, 10);
     }
 
     return () => {

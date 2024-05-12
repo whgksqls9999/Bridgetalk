@@ -45,13 +45,18 @@ function ParentVoiceRecordModalArea() {
     }
   }
 
+  console.log(audioBlob);
+  if (audioBlob) {
+    console.log(URL.createObjectURL(audioBlob));
+  }
+
   return (
     <S.Container className="closable" onClick={handleClose}>
       <S.AudioContainer>
         <div className="title" style={{ fontFamily: language === 'kor' ? 'DNF' : 'CherryBomb' }}>
           {title[language]}
         </div>
-        <audio className="audio" src={URL.createObjectURL(audioBlob!)} preload={'auto'} controls></audio>
+        <audio className="audio" src={URL.createObjectURL(audioBlob!)} controls></audio>
         <div className="buttons" style={{ display: 'flex', gap: '2svw' }}>
           <button
             className="closable close"

@@ -43,9 +43,9 @@ export function TalkingComponents({ reply, setReply, devounceTimerRef }: any) {
   // 볼륨 체크
   useEffect(() => {
     if (isRecording && getAvgVolumeData.current) {
-      console.log('볼륨:', volume, '평균 볼륨:', getAvgVolumeData.current(volume));
+      // console.log('볼륨:', volume, '평균 볼륨:', getAvgVolumeData.current(volume));
       if (volume >= Math.floor(getAvgVolumeData.current(volume) * 0.8)) {
-        console.log('{{볼륨이 평균 볼륨의 80% 이상이므로 2초 타이머 리셋}}');
+        // console.log('{{볼륨이 평균 볼륨의 80% 이상이므로 2초 타이머 리셋}}');
 
         if (devounceTimerRef.current) {
           clearTimeout(devounceTimerRef.current);
@@ -91,7 +91,7 @@ export function TalkingComponents({ reply, setReply, devounceTimerRef }: any) {
       volumeCheckInterval = generateVolumeCheckInterval(analyser, dataArray, bufferLength, setVolume);
 
       // 녹음 시작
-      startRecordVoice(streamRef, recorderRef, audioDataRef);
+      startRecordVoice(streamRef, recorderRef, audioDataRef, 10);
     }
 
     if (!isRecording) {
@@ -121,7 +121,7 @@ export function TalkingComponents({ reply, setReply, devounceTimerRef }: any) {
   // audioBlob(내 녹음 내용) 저장 후 '한 마디 전송' API 요청
   useEffect(() => {
     if (audioBlob && isSend) {
-      console.log('{한마디 전송 API 요청');
+      console.log('{한마디 전송 API 요청', audioBlob);
       setWait(true);
       postSendTalk(reportsId, audioBlob, setReply).finally(() => {
         setIsSend(false);
