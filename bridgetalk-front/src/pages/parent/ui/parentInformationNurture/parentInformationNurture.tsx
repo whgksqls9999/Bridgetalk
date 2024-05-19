@@ -37,7 +37,7 @@ export function ParentInformationNurture() {
     [],
   );
 
-  const categories = useMemo(
+  const categories: any = useMemo(
     () => ({
       kor: ['예비', '영유아기', '학령기', '사춘기'],
       viet: ['Chuẩn bị', 'Thời kỳ ấu thơ', 'Thời kỳ đến trường', 'Thời kỳ dậy thì'],
@@ -45,7 +45,7 @@ export function ParentInformationNurture() {
     [],
   );
 
-  const header = useMemo(
+  const header: any = useMemo(
     () => ({
       kor: ['번호', '제목', ''],
       viet: ['Số', 'Tiêu đề', ''],
@@ -53,7 +53,7 @@ export function ParentInformationNurture() {
     [],
   );
 
-  const title = useMemo(
+  const title: any = useMemo(
     () => ({
       kor: '육아 정보',
       viet: 'thông tin nuôi dạy con cái',
@@ -103,7 +103,7 @@ export function ParentInformationNurture() {
         <table>
           <thead className="thead">
             <tr className="main__header">
-              {header[language].map((it) => (
+              {header[language].map((it: any) => (
                 <td>{it}</td>
               ))}
             </tr>

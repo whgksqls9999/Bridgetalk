@@ -44,7 +44,7 @@ function ParentVoiceRecordModalArea() {
   const audioBlob = useVoiceStore((state) => state.audioBlob);
   const language = useReportStore((state) => state.language);
 
-  const title = useMemo(
+  const title: any = useMemo(
     () => ({
       kor: '녹음이 완료됐어요!',
       viet: 'Việc ghi âm đã xong!',
@@ -52,7 +52,7 @@ function ParentVoiceRecordModalArea() {
     [],
   );
 
-  const button = useMemo(
+  const button: any = useMemo(
     () => ({
       kor: ['취소하기', '보내기'],
       viet: ['Bỏ', 'Gửi'],

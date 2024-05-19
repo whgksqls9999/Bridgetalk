@@ -84,11 +84,13 @@ function LangIcon() {
     setLanguage: state.setLangauge,
   }));
 
+  const userLang: any = sessionStorage.getItem('language') || 'kor';
+
   return (
     <button
       className="lang"
       onClick={() => {
-        setLanguage(language === 'kor' ? 'viet' : 'kor');
+        setLanguage(language === 'kor' ? userLang : 'kor');
       }}
     >
       {language === 'kor' ? <img src={'/assets/img/ktv.svg'} /> : <img src={'/assets/img/vtk.svg'} />}

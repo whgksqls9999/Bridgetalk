@@ -19,7 +19,7 @@ export function ParentReportListRight() {
     childrenList: state.childrenList,
   }));
 
-  const title = useMemo(
+  const title: any = useMemo(
     () => ({
       kor: '아이 속마음 리포트',
       viet: 'Báo cáo',

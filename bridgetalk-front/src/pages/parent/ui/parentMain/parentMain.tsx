@@ -17,7 +17,7 @@ export function ParentMain() {
     getProfile(setChildrenList);
   }, []);
 
-  const leftMenu = useMemo(
+  const leftMenu: any = useMemo(
     () => ({
       kor: <>아이의 마음</>,
       viet: (
@@ -30,7 +30,7 @@ export function ParentMain() {
     [],
   );
 
-  const rightMenu = useMemo(
+  const rightMenu: any = useMemo(
     () => ({
       kor: <>정보</>,
       viet: (

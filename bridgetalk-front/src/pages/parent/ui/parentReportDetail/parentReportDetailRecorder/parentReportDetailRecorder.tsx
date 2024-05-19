@@ -34,7 +34,7 @@ export const ParentReportDetailRecorder = memo(() => {
   const recorderRef: MutableRefObject<MediaRecorder | null> = useRef(null);
 
   // 언어 별 출력 문구
-  const title = useMemo(
+  const title: any = useMemo(
     () => ({
       kor: '답장하기',
       viet: 'phúc đáp',

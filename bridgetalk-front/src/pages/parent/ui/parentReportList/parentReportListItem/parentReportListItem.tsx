@@ -28,7 +28,7 @@ export function ParentReportListItem({
   const [date, setDate] = useState<string[]>([]);
   const language = useReportStore((state) => state.language);
 
-  const dateWord = useMemo(
+  const dateWord: any = useMemo(
     () => ({
       kor: ['년', '월', '일'],
       viet: ['Năm', 'tháng', 'ngày'],

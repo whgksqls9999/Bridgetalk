@@ -23,14 +23,14 @@ export function ParentReportDetail() {
   const [report, setReport] = useState<any>('');
   const [date, setDate] = useState<string[]>([]);
 
-  const dateWord = useMemo(
+  const dateWord: any = useMemo(
     () => ({
       kor: ['.', '.', '.'],
       viet: ['.', '.', '.'],
     }),
     [],
   );
-  const title = useMemo(
+  const title: any = useMemo(
     () => ({
       kor: '분석 리포트',
       viet: 'Báo cáo',
@@ -38,7 +38,7 @@ export function ParentReportDetail() {
     [],
   );
 
-  const menu = useMemo(
+  const menu: any = useMemo(
     () => ({
       kor: ['요약', '솔루션'],
       viet: ['Tóm tắt', 'Giải pháp'],

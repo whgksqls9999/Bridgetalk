@@ -9,7 +9,7 @@ export function ParentInformationMain() {
 
   const language = useReportStore((state) => state.language);
 
-  const title = useMemo(
+  const title: any = useMemo(
     () => ({
       kor: ['육아 정보', '단어 학습'],
       viet: ['Nuôi dưỡng thông tin', 'học chữ'],

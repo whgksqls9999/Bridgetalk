@@ -27,6 +27,8 @@ export function handleSignin(requestDto: any, userStore: any, navigate: Navigate
           btoa(data.refreshToken + process.env.REACT_APP_SECURE_CODE),
         );
 
+        localStorage.setItem('language', data.language);
+
         userStore.setUserId(data.userId);
         userStore.setUserDino(data.userDino);
         userStore.setUserEmail(data.userEmail);

@@ -12,7 +12,7 @@ export function ParentReportDetailRecorderButton({ isRecording, setIsRecording }
   const setIsRecordFinished = useVoiceStore((state) => state.setIsRecordFinished);
   const language = useReportStore((state) => state.language);
 
-  const buttonWord = useMemo(
+  const buttonWord: any = useMemo(
     () => ({
       kor: !isRecording ? '녹음하기' : '종료하기',
       viet: !isRecording ? 'Đang ghi' : 'Trả lời',
