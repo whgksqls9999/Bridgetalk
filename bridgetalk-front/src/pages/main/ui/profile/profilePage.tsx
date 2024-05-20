@@ -54,20 +54,64 @@ export function ProfilePage() {
         <img src={'assets/img/main/setting.svg'} />
       </button>
 
-      <button
-        onClick={() => {
-          customAxios
-            .get(`/notification/send-test/${userStore.userId}`)
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }}
-      >
-        sse테스트
-      </button>
+      <div style={{ display: 'flex' }}>
+        <button
+          onClick={() => {
+            customAxios
+              .get(`/notification/send-test/aea81011-0743-4423-8c41-170ff790a5f9`)
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }}
+        >
+          sse테스트 send-test
+        </button>
+        <button
+          onClick={() => {
+            customAxios
+              .put(`/notification/read`)
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }}
+        >
+          sse테스트 read
+        </button>
+        <button
+          onClick={() => {
+            customAxios
+              .get(`/notification`)
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }}
+        >
+          sse테스트 get
+        </button>
+        <button
+          onClick={() => {
+            customAxios
+              .get(`/notification/`)
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }}
+        >
+          sse테스트 delete
+        </button>
+      </div>
 
       <div className="main">
         <div className="main__title">
