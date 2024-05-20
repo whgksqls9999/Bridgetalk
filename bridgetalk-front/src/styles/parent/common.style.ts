@@ -15,9 +15,10 @@ export function color(alpha: number) {
     dark: `rgba(34, 34, 34, ${alpha})`,
     red: `rgba(255, 97, 97, ${alpha})`,
     shadowTop: `rgba(185, 204, 255, ${alpha})`,
-    bright: `rgba(245, 245, 245, ${alpha})`,
+    bright: `rgba(253, 253, 253, ${alpha})`,
     light: `rgba(224, 233, 255, ${alpha})`,
-    sub3: `rgba(231, 230, 233,${alpha})`,
+    sub3: `rgba(231, 230, 233, ${alpha})`,
+    line: `rgba(170, 170, 170, ${alpha})`,
   };
 }
 

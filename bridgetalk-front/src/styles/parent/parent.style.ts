@@ -29,6 +29,8 @@ export const Background = styled.div`
     width: 90svw;
     height: 100%;
 
+    overflow: hidden;
+
     animation: ${fadein} 1s;
 
     background-color: rgb(240, 240, 240);
@@ -45,20 +47,7 @@ export const Background = styled.div`
 
     position: relative;
 
-    &::after {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      content: '';
-
-      background-color: ${color(1).bright};
-      opacity: 0;
-      z-index: -1;
-    }
-
-    padding: 2svh 2svw;
+    /* padding: 2svh 2svw; */
 
     display: flex;
     justify-content: center;
@@ -88,21 +77,21 @@ export const Navbar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2svh;
+  gap: 6svh;
 
   button {
     background-color: transparent;
     border: none;
 
     width: 100%;
-    height: 15svh;
+    height: 8svh;
 
     img {
       cursor: pointer;
 
       transition: all 0.2s;
 
-      width: 5svw;
+      width: 3.8svw;
       &:hover {
         transform: scale(1.1);
       }

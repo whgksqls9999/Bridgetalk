@@ -12,8 +12,8 @@ interface Letter {
 
 export function MessageList() {
   const [letters, setLetters] = useState<Letter[]>([]);
-
-  useEffect(() => {
+  // 변수, set변수 
+  useEffect(() => { // 실행시 사용하는 함수
     const fetchLetters = async () => {
       try {
         const response = await customAxios.get('/letters');
@@ -26,8 +26,8 @@ export function MessageList() {
     fetchLetters();
   }, []);
 
-  return (
-    <S.Container>
+  return ( // 실행시 나오는 화면
+    <S.Container> 
       <div className="messageList">
         <div className="messageList__list">
           <div className="messageList__list-header">

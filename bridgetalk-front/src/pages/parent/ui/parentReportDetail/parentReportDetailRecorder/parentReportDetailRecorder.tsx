@@ -38,6 +38,7 @@ export const ParentReportDetailRecorder = memo(() => {
     () => ({
       kor: '답장하기',
       viet: 'phúc đáp',
+      ph: 'Tumugon',
     }),
     [],
   );
@@ -51,6 +52,10 @@ export const ParentReportDetailRecorder = memo(() => {
     return () => {
       // 오디오 스트림 해제
       if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => {
+          track.stop();
+          console.log('트랙 해제');
+        });
         streamRef.current = null;
       }
     };
@@ -84,7 +89,7 @@ export const ParentReportDetailRecorder = memo(() => {
 
   return (
     <S.Container>
-      <div className="title" style={{ fontFamily: language === 'kor' ? 'DNF' : 'Pretendard' }}>
+      <div className="title" style={{ fontFamily: language === 'kor' ? 'DNF' : 'Pretendard-Black' }}>
         {title[language]}
       </div>
       <ParentReportDetailVolumeChecker isRecording={isRecording} />

@@ -35,7 +35,13 @@ export function GamingPage() {
             />
           </div>
           <div className="gamingPage__container-toPuzzle">
-            <img src="/assets/img/child/game/toDress.svg" alt="" />
+            <img
+              src="/assets/img/child/game/toDress.svg"
+              alt=""
+              onClick={() => {
+                navigate('/dress');
+              }}
+            />
           </div>
         </div>
       </div>

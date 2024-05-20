@@ -49,5 +49,9 @@ function Timer({ isRecording }: Props) {
       }
     };
   }, [isRecording]);
-  return <div>{`${Math.floor(time / 60)}`.padStart(2, '0') + ' : ' + `${Math.floor(time % 60)}`.padStart(2, '0')}</div>;
+  return (
+    <div className="time">
+      {`${Math.floor(time / 60)}`.padStart(2, '0') + ' : ' + `${Math.floor(time % 60)}`.padStart(2, '0')}
+    </div>
+  );
 }

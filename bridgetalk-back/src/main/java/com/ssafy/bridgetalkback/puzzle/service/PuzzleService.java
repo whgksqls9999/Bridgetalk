@@ -47,10 +47,10 @@ public class PuzzleService {
         return puzzleResponseDto;
     }
 
-    public PuzzleListResponseDto puzzleList() {
+    public PuzzleListResponseDto puzzleList(String nation) {
         log.info("{ PuzzleService } : 퍼즐 리스트 조회 진입");
 
-        List<Puzzle> puzzles = puzzleRepository.findAllByIsDeleted(0);
+        List<Puzzle> puzzles = puzzleRepository.findAllByIsDeletedAndPuzzleNation(0, nation);
         List<PuzzleResponseDto> puzzleList = new ArrayList<>();
 
         for (Puzzle puzzle : puzzles){

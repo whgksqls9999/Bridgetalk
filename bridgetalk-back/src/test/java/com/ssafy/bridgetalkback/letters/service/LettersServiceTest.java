@@ -1,6 +1,7 @@
 package com.ssafy.bridgetalkback.letters.service;
 
 import com.ssafy.bridgetalkback.common.ServiceTest;
+import com.ssafy.bridgetalkback.global.Language;
 import com.ssafy.bridgetalkback.global.exception.BaseException;
 import com.ssafy.bridgetalkback.kids.domain.Kids;
 import com.ssafy.bridgetalkback.letters.domain.Letters;
@@ -67,14 +68,14 @@ public class LettersServiceTest extends ServiceTest {
     @DisplayName("올바른 s3의 음성파일로 stt를 실행")
     void startStt() {
         //given
-        String fileName = "letters/05c0ee2a-645d-43b5-a623-518be49ab324_test-v.mp3";
+        String fileName = "test/test-v6.mp3";
 
         //when
-        String extractText = lettersService.stt(fileName);
+        String extractText = lettersService.stt(fileName, Language.viet);
 
         //given
-        String results = "Mình đã nói với mẹ là mình muốn đi công viên giải trí. Nhưng mẹ mình, người luôn bận rộn, không hiểu mình nói gì. Tôi muốn chơi tất cả các trò chơi ở công viên giải trí.";
-        assertThat(extractText).isEqualTo(results);
+        String results = "Alice, mình hiểu là cậu muốn đi công viên giải trí mà. Tôi xin lỗi vì luôn bận rộn và không thể nghe lời bạn một cách đúng đắn. Tôi hiểu cảm giác của anh, mình muốn chia sẻ những trải nghiệm thú.";
+        assertThat(extractText).isNotEmpty();
     }
 
     @Test

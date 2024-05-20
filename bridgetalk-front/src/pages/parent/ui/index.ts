@@ -7,3 +7,6 @@ export * from '@/pages/parent/ui/parentInformationMain/parentInformationMain';
 export * from '@/pages/parent/ui/parentInformationWord/parentInformationWord';
 export * from '@/pages/parent/ui/parentReportDetail/parentReportDetail';
 export * from '@/pages/parent/ui/parentReportList/parentReportList';
+export * from '@/pages/parent/ui/community/boardPage';
+export * from '@/pages/parent/ui/community/createPage';
+export * from '@/pages/parent/ui/community/boardDetailPage';

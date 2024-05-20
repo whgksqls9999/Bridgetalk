@@ -15,7 +15,6 @@ export function errorCatch(err: Error, setErrorModalState: any) {
 
           try {
             const errorData = JSON.parse(text);
-
             return handleError(errorData, setErrorModalState);
           } catch (err) {
             setErrorModalState('예기치 못한 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
@@ -25,7 +24,6 @@ export function errorCatch(err: Error, setErrorModalState: any) {
         reader.readAsText(err.response.data);
       } else if (contentType && typeof contentType === 'string' && contentType.includes('application/json')) {
         const errorData = err.response.data;
-
         return handleError(errorData, setErrorModalState);
       }
     }

@@ -16,7 +16,7 @@ export function ParentInformationNurtureDetail() {
   useEffect(() => {
     handleNurtureInfoDetail(Number(nurtureId), language, setInfoDetail);
 
-    console.log(infoDetail && infoDetail.content.split('■').join('\n'));
+    // console.log(infoDetail && infoDetail.content.split('■').join('\n'));
   }, [language]);
 
   return (

@@ -12,10 +12,12 @@ interface Store {
   setReports_UUID: (reports_UUID: any) => void;
   resultPage: number;
   setResultPage: (resultPage: number) => void;
+  replys: any;
+  setReplys: (state: any) => void;
 }
 
 interface Language {
-  type: 'kor' | 'viet';
+  type: 'kor' | 'viet' | 'ph';
 }
 
 interface Report {
@@ -36,4 +38,6 @@ export const useReportStore = create<Store>()((set) => ({
   setReports_UUID: (reports_UUID: any) => set({ reports_UUID: reports_UUID }),
   resultPage: 0,
   setResultPage: (resultPage: number) => set({ resultPage: resultPage }),
+  replys: [],
+  setReplys: (state: any) => set({ replys: state }),
 }));

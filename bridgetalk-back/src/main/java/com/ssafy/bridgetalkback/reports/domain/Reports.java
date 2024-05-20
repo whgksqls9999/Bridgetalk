@@ -33,17 +33,26 @@ public class Reports extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String reportsSummaryViet;
 
+    @Column(columnDefinition = "TEXT")
+    private String reportsSummaryPh;
+
     @Convert(converter = StringListConverter.class)
     private List<String> reportsKeywordsKor;
 
     @Convert(converter = StringListConverter.class)
     private List<String> reportsKeywordsViet;
 
+    @Convert(converter = StringListConverter.class)
+    private List<String> reportsKeywordsPh;
+
     @Column(columnDefinition = "TEXT")
     private String reportsSolutionKor;
 
     @Column(columnDefinition = "TEXT")
     private String reportsSolutionViet;
+
+    @Column(columnDefinition = "TEXT")
+    private String reportsSolutionPh;
 
     private Reports(Kids kids, String reportsOriginContent) {
         this.kids = kids;
@@ -61,6 +70,9 @@ public class Reports extends BaseEntity {
     public void updateSummaryViet(String summaryTextViet) {
         this.reportsSummaryViet = summaryTextViet;
     }
+    public void updateSummaryPh(String summaryTextPh) {
+        this.reportsSummaryPh = summaryTextPh;
+    }
 
     public void updateKeywordsKor(List<String> keywordKorList) {
         this.reportsKeywordsKor = keywordKorList;
@@ -68,6 +80,9 @@ public class Reports extends BaseEntity {
 
     public void updateKeywordsViet(List<String> keywordVietList) {
         this.reportsKeywordsViet = keywordVietList;
+    }
+    public void updateKeywordsPh(List<String> keywordVietList) {
+        this.reportsKeywordsPh = keywordVietList;
     }
 
     public void updateSolutionKor(String solutionTextKor) {
@@ -77,14 +92,20 @@ public class Reports extends BaseEntity {
     public void updateSolutionViet(String solutionTextViet) {
         this.reportsSolutionViet = solutionTextViet;
     }
+    public void updateSolutionPh(String solutionTextViet) {
+        this.reportsSolutionPh = solutionTextViet;
+    }
 
-    public void updateReports(String summaryTextKor, String summaryTextViet, List<String> keywordKorList, List<String> keywordVietList, String solutionTextKor, String solutionTextViet) {
+    public void updateReportsViet(String summaryTextKor, String summaryTextViet, String summaryTextPh,List<String> keywordKorList, List<String> keywordVietList, List<String> keywordPhList, String solutionTextKor, String solutionTextViet, String solutionTextPh) {
         this.reportsSummaryKor = summaryTextKor;
         this.reportsSummaryViet = summaryTextViet;
+        this.reportsSummaryPh = summaryTextPh;
         this.reportsKeywordsKor = keywordKorList;
         this.reportsKeywordsViet = keywordVietList;
+        this.reportsKeywordsPh = keywordPhList;
         this.reportsSolutionKor = solutionTextKor;
         this.reportsSolutionViet = solutionTextViet;
+        this.reportsSolutionPh = solutionTextPh;
     }
 
     public void updateReportsOriginContent(String updateContent) {

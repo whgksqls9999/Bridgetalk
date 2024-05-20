@@ -11,7 +11,7 @@ export async function connectCamera(
     streamRef.current = stream;
     videoRef.current!.srcObject = stream;
   } catch (err) {
-    console.log('카메라 액세스에 실패했습니다.', err);
+    // console.log('카메라 액세스에 실패했습니다.', err);
   }
 
   // // 일반 모드 카메라 연결하기

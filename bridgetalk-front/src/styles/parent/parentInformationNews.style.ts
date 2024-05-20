@@ -12,6 +12,7 @@ export const Container = styled.div`
   flex-direction: column;
   height: 90svh;
   width: 70svw;
+  padding: 2svh 2svw;
 
   gap: 2svh;
 
@@ -31,6 +32,9 @@ export const Container = styled.div`
     button {
       width: 9svw;
       height: 9svh;
+
+      white-space: normal;
+      word-wrap: break-word;
 
       border: none;
       border-radius: 2svw;

@@ -59,7 +59,7 @@ public class TalkControllerTest extends ControllerTest {
             Resource mockResource = mock(Resource.class);
             doNothing()
                     .when(reportsUpdateService)
-                    .createReportAsync(REPORTS_ID);
+                    .createReportAsync2(REPORTS_ID, UUID.randomUUID().toString());
             doReturn(mockResource)
                     .when(talkService)
                     .stopTalk(UUID.randomUUID());

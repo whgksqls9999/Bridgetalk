@@ -52,13 +52,12 @@ export const Container = styled.div`
     z-index: 1;
 
     div {
-      font-family: 'Pretendard';
+      font-family: 'Pretendard-Black';
       font-size: 3svw;
       color: ${color(1).bright};
       position: relative;
 
       ${textShadowBlue}
-      font-family: 'DNF';
     }
 
     img {

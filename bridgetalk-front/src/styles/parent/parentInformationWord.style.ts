@@ -13,6 +13,7 @@ const insetShadow = css`
 
 export const Container = styled.div`
   align-items: center;
+  padding: 2svh 2svw;
 
   * {
     font-family: 'Pretendard';

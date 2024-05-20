@@ -16,6 +16,7 @@ export function ParentReportDetailRecorderButton({ isRecording, setIsRecording }
     () => ({
       kor: !isRecording ? '녹음하기' : '종료하기',
       viet: !isRecording ? 'Đang ghi' : 'Trả lời',
+      ph: !isRecording ? 'Mag-record' : 'Itigil ang pagre-record',
     }),
     [isRecording],
   );

@@ -145,14 +145,14 @@ public class PuzzleControllerTest extends ControllerTest {
     @Nested
     @DisplayName("퍼즐 리스트 조회 API [GET /api/puzzle]")
     class puzzleList {
-        private static final String BASE_URL = "/api/puzzle";
+        private static final String BASE_URL = "/api/puzzle/list";
 
         @Test
         @DisplayName("Authorization_Header에 RefreshToken이 없으면 예외가 발생한다")
         void throwExceptionByInvalidPermission() throws Exception {
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(BASE_URL);
+                    .get(BASE_URL+"/viet");
 
             // then
             final AuthErrorCode expectedError = AuthErrorCode.INVALID_PERMISSION;
@@ -173,14 +173,15 @@ public class PuzzleControllerTest extends ControllerTest {
         @DisplayName("퍼즐 리스트 조회에 성공한다")
         void success() throws Exception {
             // given
+            String nation = "viet";
             given(jwtProvider.getId(anyString())).willReturn(String.valueOf(UUID.randomUUID()));
             doReturn(createPuzzleListResponseDto())
                     .when(puzzleService)
-                    .puzzleList();
+                    .puzzleList(nation);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(BASE_URL)
+                    .get(BASE_URL+"/"+nation)
                     .header(AUTHORIZATION, BEARER_TOKEN + REFRESH_TOKEN);
 
             // then

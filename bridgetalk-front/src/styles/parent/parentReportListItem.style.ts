@@ -65,7 +65,13 @@ export const Content = styled.div`
   .left {
     width: 100%;
     height: 100%;
-    background-color: ${color(1).black};
+
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 100%;
+    }
   }
 
   .right {

@@ -36,11 +36,17 @@ public class Boards extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String boardsTitleViet;
 
+    @Column(nullable = false, length = 100)
+    private String boardsTitlePh;
+
     @Column(columnDefinition = "TEXT", nullable = false)
     private String boardsContentKor;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String boardsContentViet;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String boardsContentPh;
 
     @Column(nullable = false)
     private int likes;
@@ -49,26 +55,40 @@ public class Boards extends BaseEntity {
     private List<Comments> commentsList = new ArrayList<>();
 
 
-    private Boards(Reports reports, Parents parents, String boardsTitleKor, String boardsTitleViet,
-                   String boardsContentKor, String boardsContentViet) {
+    private Boards(Reports reports, Parents parents, String boardsTitleKor, String boardsTitleViet, String boardsTitlePh,
+                   String boardsContentKor, String boardsContentViet, String boardsContentPh) {
         this.reports = reports;
         this.parents = parents;
         this.boardsTitleKor = boardsTitleKor;
         this.boardsTitleViet = boardsTitleViet;
+        this.boardsTitlePh = boardsTitlePh;
         this.boardsContentKor = boardsContentKor;
         this.boardsContentViet = boardsContentViet;
+        this.boardsContentPh = boardsContentPh;
         this.likes = 0;
     }
 
-    public static Boards createBoards(Reports reports, Parents parents, String boardsTitleKor, String boardsTitleViet,
-                                      String boardsContentKor, String boardsContentViet) {
-        return new Boards(reports, parents, boardsTitleKor, boardsTitleViet, boardsContentKor, boardsContentViet);
+    public static Boards createBoards(Reports reports, Parents parents, String boardsTitleKor, String boardsTitleViet, String boardsTitlePh,
+                                      String boardsContentKor, String boardsContentViet, String boardsContentPh) {
+        return new Boards(reports, parents, boardsTitleKor, boardsTitleViet, boardsTitlePh, boardsContentKor,
+                boardsContentViet, boardsContentPh);
     }
 
-    public void updateBoards(String boardsTitleKor, String boardsTitleViet, String boardsContentKor, String boardsContentViet) {
+    public void updateBoards(String boardsTitleKor, String boardsTitleViet, String boardsTitlePh, String boardsContentKor,
+                             String boardsContentViet, String boardsContentPh) {
         this.boardsTitleKor = boardsTitleKor;
         this.boardsTitleViet = boardsTitleViet;
+        this.boardsTitlePh = boardsTitlePh;
         this.boardsContentKor = boardsContentKor;
         this.boardsContentViet = boardsContentViet;
+        this.boardsContentPh = boardsContentPh;
+    }
+
+    public void increaseLikes() {
+        this.likes = this.likes + 1;
+    }
+
+    public void decreaseLikes() {
+        this.likes = this.likes - 1;
     }
 }

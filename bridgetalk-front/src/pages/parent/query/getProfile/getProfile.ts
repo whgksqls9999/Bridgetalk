@@ -19,5 +19,7 @@ export async function getProfile(setChildrenList: any) {
 
       setChildrenList(childrenList);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      // console.log(err);
+    });
 }

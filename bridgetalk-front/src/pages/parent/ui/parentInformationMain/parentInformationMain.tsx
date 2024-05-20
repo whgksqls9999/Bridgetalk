@@ -13,6 +13,7 @@ export function ParentInformationMain() {
     () => ({
       kor: ['육아 정보', '단어 학습'],
       viet: ['Nuôi dưỡng thông tin', 'học chữ'],
+      ph: [''],
     }),
     [],
   );

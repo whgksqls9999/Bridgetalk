@@ -7,6 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   width: 100svw;
   height: 100svh;
+  padding: 5svh 0;
   background-color: ${color(0.2).black};
 
   /* ::-webkit-scrollbar {
@@ -20,6 +21,8 @@ export const Container = styled.div`
     border: none;
     background-color: transparent;
 
+    cursor: pointer;
+
     img {
       width: 7svw;
     }
@@ -32,6 +35,7 @@ export const Container = styled.div`
     background-color: transparent;
     border: none;
 
+    cursor: pointer;
     img {
       width: 5.8svw;
     }
@@ -55,8 +59,11 @@ export const Container = styled.div`
     }
 
     &__profilelist {
+      .selected {
+        background-color: ${color(1).main};
+      }
       &-wrapper {
-        width: 80svw;
+        max-width: 80svw;
         overflow-x: auto;
         overflow-y: visible;
         position: relative;
@@ -180,6 +187,11 @@ export const Container = styled.div`
       }
 
       &-empty {
+        button {
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+        }
         img {
           width: 5.5svw;
         }
@@ -192,7 +204,11 @@ export const Container = styled.div`
         width: 20.9svw;
         height: 12svh;
         font-size: 2.5svw;
+
+        cursor: pointer;
       }
     }
   }
 `;
+
+export const ProfilelistItem = styled.div<{ idx: number }>``;

@@ -1,6 +1,7 @@
 package com.ssafy.bridgetalkback.parents.domain;
 
 import com.ssafy.bridgetalkback.global.BaseEntity;
+import com.ssafy.bridgetalkback.global.Language;
 import com.ssafy.bridgetalkback.kids.domain.Kids;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class Parents extends BaseEntity {
     @Column(nullable = false, length = 10)
     private String parentsDino;
 
+    @Column(nullable = false, length = 20)
+    private Language language;
+
     @Column(nullable = false)
     private int parentsActive;
 
@@ -47,7 +51,7 @@ public class Parents extends BaseEntity {
     @OneToMany(mappedBy = "parents", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Kids> kidsList = new ArrayList<>();
 
-    private Parents(String parentsName, Email parentsEmail, Password parentsPassword, String parentsNickname, String parentsDino) {
+    private Parents(String parentsName, Email parentsEmail, Password parentsPassword, String parentsNickname, String parentsDino, Language language) {
         this.uuid = UUID.randomUUID();
         this.parentsName = parentsName;
         this.parentsEmail = parentsEmail;
@@ -56,10 +60,11 @@ public class Parents extends BaseEntity {
         this.parentsDino = parentsDino;
         this.parentsActive = 0;
         this.role = Role.USER;
+        this.language = language;
     }
 
-    public static Parents createParents(String parentsName, Email parentsEmail, Password parentsPassword, String parentsNickname, String parentsDino) {
-        return new Parents(parentsName, parentsEmail, parentsPassword, parentsNickname, parentsDino);
+    public static Parents createParents(String parentsName, Email parentsEmail, Password parentsPassword, String parentsNickname, String parentsDino, Language language) {
+        return new Parents(parentsName, parentsEmail, parentsPassword, parentsNickname, parentsDino, language);
     }
 
     public void updateProfile(String nickname, String dino) {

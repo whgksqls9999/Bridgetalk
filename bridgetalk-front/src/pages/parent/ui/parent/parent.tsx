@@ -71,7 +71,11 @@ function Navbar({ navigate }: any) {
       >
         <img src={`/assets/img/parent/navbar/info_${pathCheck('word')}.svg`} />
       </button>
-      <button>
+      <button
+        onClick={() => {
+          navigate('board');
+        }}
+      >
         <img src={`/assets/img/parent/navbar/community_${pathCheck('community')}.svg`} />
       </button>
     </S.Navbar>
@@ -84,14 +88,27 @@ function LangIcon() {
     setLanguage: state.setLangauge,
   }));
 
+  const lang = localStorage.getItem('language');
+
+  let userLang: 'viet' | 'ph' | 'kor' = 'kor';
+  if (lang === 'viet' || lang === 'ph' || lang === 'kor') {
+    userLang = lang || 'kor';
+  }
+
   return (
     <button
       className="lang"
       onClick={() => {
-        setLanguage(language === 'kor' ? 'viet' : 'kor');
+        setLanguage(language === 'kor' ? userLang : 'kor');
       }}
     >
-      {language === 'kor' ? <img src={'/assets/img/ktv.svg'} /> : <img src={'/assets/img/vtk.svg'} />}
+      {language === 'kor' ? (
+        <img src={`/assets/flag/kor.png`} />
+      ) : language === 'ph' ? (
+        <img src={`/assets/flag/ph.png`} />
+      ) : (
+        <img src={`/assets/flag/viet.png`} />
+      )}
     </button>
   );
 }

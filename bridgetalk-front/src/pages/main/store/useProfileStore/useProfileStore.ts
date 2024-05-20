@@ -5,6 +5,10 @@ interface Store {
   setDeleteModalOpenState: any;
   passwordCheckModalState: any;
   setPasswordCheckModalState: any;
+  editProfileModalState: any;
+  setEditProfileModalState: any;
+  deleteProfileModalState: any;
+  setDeleteProfileModalState: any;
 }
 
 export const useProfileStore = create<Store>()((set) => ({
@@ -15,4 +19,8 @@ export const useProfileStore = create<Store>()((set) => ({
     }),
   passwordCheckModalState: false,
   setPasswordCheckModalState: (state: []) => set({ passwordCheckModalState: state }),
+  editProfileModalState: false,
+  setEditProfileModalState: (state: any) => set({ editProfileModalState: state }),
+  deleteProfileModalState: false,
+  setDeleteProfileModalState: (state: any) => set({ deleteModalOpenState: state }),
 }));

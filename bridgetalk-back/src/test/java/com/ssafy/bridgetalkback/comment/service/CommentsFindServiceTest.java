@@ -49,7 +49,7 @@ public class CommentsFindServiceTest extends ServiceTest {
         parents = parentsRepository.save(SUNKYOUNG.toParents());
         kids = kidsRepository.save(JIYEONG.toKids(parents));
         reports = reportsRepository.save(REPORTS_01.toReports(kids));
-        reportsUpdateService.createReportAsync(reports.getReportsId());
+        reportsUpdateService.createReportAsync(reports.getReportsId(), kids.getUuid().toString());
         boards = boardsRepository.save(BOARDS_01.toBoards(reports, parents));
         comments = commentsRepository.save(COMMENTS_01.toComments(parents, boards));
     }

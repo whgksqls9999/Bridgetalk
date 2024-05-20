@@ -1,6 +1,7 @@
 package com.ssafy.bridgetalkback.letters.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.ssafy.bridgetalkback.global.Language;
 import com.ssafy.bridgetalkback.global.exception.BaseException;
 import com.ssafy.bridgetalkback.global.exception.GlobalErrorCode;
 import com.ssafy.bridgetalkback.letters.exception.LettersErrorCode;
@@ -24,7 +25,7 @@ public class LettersTranscribeService {
     private static final Region REGION = Region.AP_NORTHEAST_2;
     private static TranscribeClient client;
 
-    public String transcribe(String bucketName, String fileName) {
+    public String transcribe(String bucketName, String fileName, Language language) {
         log.info("{ LettersTranscriptionService } => bucketName: {}, fileName: {}", bucketName, fileName);
         client = TranscribeClient.builder()
                 .credentialsProvider(getCredentials())
@@ -43,14 +44,27 @@ public class LettersTranscribeService {
 //        String outputS3BucketName = "s3://" + bucketName;
         log.info(">> {} / {}", transcriptionJobName, mediaUri);
         // Create the transcription job request
-        StartTranscriptionJobRequest request = StartTranscriptionJobRequest.builder()
-                .transcriptionJobName(transcriptionJobName)
+        StartTranscriptionJobRequest request = null;
+        if (language.equals(Language.viet)){
+            request = StartTranscriptionJobRequest.builder()
+                    .transcriptionJobName(transcriptionJobName)
 //                .languageCode(LanguageCode.EN_US.toString())
-                .languageCode(LanguageCode.VI_VN)
-                .mediaFormat(mediaType)
-                .media(myMedia)
-                .outputBucketName(bucketName)
-                .build();
+                    .languageCode(LanguageCode.VI_VN)
+                    .mediaFormat(mediaType)
+                    .media(myMedia)
+                    .outputBucketName(bucketName)
+                    .build();
+
+        } else{
+            request = StartTranscriptionJobRequest.builder()
+                    .transcriptionJobName(transcriptionJobName)
+//                .languageCode(LanguageCode.EN_US.toString())
+                    .languageCode("tl-PH")
+                    .mediaFormat(mediaType)
+                    .media(myMedia)
+                    .outputBucketName(bucketName)
+                    .build();
+        }
 
         log.info(">> Create the transciption job request : {}", request);
 

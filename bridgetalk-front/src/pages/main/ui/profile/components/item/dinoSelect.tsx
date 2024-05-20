@@ -20,16 +20,16 @@ export function DinoSelect({ idx }: DinoProps) {
   // GLTF 파일 로드 및 상태 설정
   const model = useLoader(GLTFLoader, `/assets/dino/D${idx}/${act}.glb`, (loader) => {
     loader.manager.onStart = (url, itemsLoaded, itemsTotal) => {
-      console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
+      // console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
     };
     loader.manager.onLoad = () => {
-      console.log('Loading complete!');
+      // console.log('Loading complete!');
     };
     loader.manager.onProgress = (url, itemsLoaded, itemsTotal) => {
-      console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
+      // console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
     };
     loader.manager.onError = (url) => {
-      console.log('There was an error loading ' + url);
+      // console.log('There was an error loading ' + url);
     };
   });
 
@@ -73,11 +73,11 @@ export function DinoSelect({ idx }: DinoProps) {
       const viewportWidth = window.innerWidth;
       if (viewportWidth < 768) {
         // 모바일 화면 크기
-        console.log('모바일');
+        // console.log('모바일');
         setScale(3);
       } else {
         // PC 화면 크기
-        console.log('피씨');
+        // console.log('피씨');
         setScale(7);
       }
     };

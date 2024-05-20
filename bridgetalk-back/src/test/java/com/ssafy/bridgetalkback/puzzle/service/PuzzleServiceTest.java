@@ -71,7 +71,7 @@ public class PuzzleServiceTest extends ServiceTest {
     @DisplayName("퍼즐 리스트 조회에 성공한다")
     void findPuzzleList() {
         // when
-        PuzzleListResponseDto responseDto = puzzleService.puzzleList();
+        PuzzleListResponseDto responseDto = puzzleService.puzzleList("viet");
 
         // then
         assertAll(

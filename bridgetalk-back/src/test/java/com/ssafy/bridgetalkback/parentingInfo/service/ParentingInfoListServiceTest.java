@@ -54,7 +54,7 @@ public class ParentingInfoListServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("(한국어) 육아정보 리스트조회(카테고리별)에 성공한다")
-        void successKorean() {
+        void successKor() {
             // when
             CustomParentingInfoListResponseDto<ParentingInfoListDto> responseDto = parentingInfoListService.getCustomParentingInfoList(PAGE, SEARCH_CATEGORY, Language.kor);
 
@@ -69,8 +69,8 @@ public class ParentingInfoListServiceTest extends ServiceTest {
                     () -> assertThat(responseDto.pageInfo().numberOfElements()).isEqualTo(PAGE_SIZE),
                     () -> assertThat(responseDto.parentingInfoList().size()).isLessThanOrEqualTo(PAGE_SIZE),
                     () -> assertThat(responseDto.parentingInfoList().get(0).parentingInfoId()).isEqualTo(parentingInfoList[0].getParentingInfoId()),
-                    () -> assertThat(responseDto.parentingInfoList().get(0).title()).isEqualTo(parentingInfoList[0].getTitle_kor()),
-                    () -> assertThat(responseDto.parentingInfoList().get(0).content()).isEqualTo(parentingInfoList[0].getContent_kor()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).title()).isEqualTo(parentingInfoList[0].getTitleKor()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).content()).isEqualTo(parentingInfoList[0].getContentKor()),
                     () -> assertThat(responseDto.parentingInfoList().get(0).link()).isEqualTo(parentingInfoList[0].getLink()),
                     () -> assertThat(responseDto.parentingInfoList().get(0).category()).isEqualTo(parentingInfoList[0].getCategory().getValue())
             );
@@ -78,7 +78,7 @@ public class ParentingInfoListServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("(베트남어) 육아정보 리스트조회(카테고리별)에 성공한다")
-        void successVietnam() {
+        void successViet() {
             // when
             CustomParentingInfoListResponseDto<ParentingInfoListDto> responseDto = parentingInfoListService.getCustomParentingInfoList(PAGE, SEARCH_CATEGORY, Language.viet);
 
@@ -93,8 +93,32 @@ public class ParentingInfoListServiceTest extends ServiceTest {
                     () -> assertThat(responseDto.pageInfo().numberOfElements()).isEqualTo(PAGE_SIZE),
                     () -> assertThat(responseDto.parentingInfoList().size()).isLessThanOrEqualTo(PAGE_SIZE),
                     () -> assertThat(responseDto.parentingInfoList().get(0).parentingInfoId()).isEqualTo(parentingInfoList[0].getParentingInfoId()),
-                    () -> assertThat(responseDto.parentingInfoList().get(0).title()).isEqualTo(parentingInfoList[0].getTitle_viet()),
-                    () -> assertThat(responseDto.parentingInfoList().get(0).content()).isEqualTo(parentingInfoList[0].getContent_viet()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).title()).isEqualTo(parentingInfoList[0].getTitleViet()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).content()).isEqualTo(parentingInfoList[0].getContentViet()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).link()).isEqualTo(parentingInfoList[0].getLink()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).category()).isEqualTo(parentingInfoList[0].getCategory().getValue())
+            );
+        }
+
+        @Test
+        @DisplayName("(필리핀어) 육아정보 리스트조회(카테고리별)에 성공한다")
+        void successPh() {
+            // when
+            CustomParentingInfoListResponseDto<ParentingInfoListDto> responseDto = parentingInfoListService.getCustomParentingInfoList(PAGE, SEARCH_CATEGORY, Language.ph);
+
+            // then
+            assertThat(responseDto.parentingInfoList().size()).isLessThanOrEqualTo(PAGE_SIZE);
+            assertThat(responseDto.pageInfo().totalPages()).isLessThanOrEqualTo(PAGE_SIZE);
+
+            assertAll(
+                    () -> assertThat(responseDto.pageInfo().totalPages()).isEqualTo(2),
+                    () -> assertThat(responseDto.pageInfo().totalElements()).isEqualTo(6),
+                    () -> assertThat(responseDto.pageInfo().hasNext()).isTrue(),
+                    () -> assertThat(responseDto.pageInfo().numberOfElements()).isEqualTo(PAGE_SIZE),
+                    () -> assertThat(responseDto.parentingInfoList().size()).isLessThanOrEqualTo(PAGE_SIZE),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).parentingInfoId()).isEqualTo(parentingInfoList[0].getParentingInfoId()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).title()).isEqualTo(parentingInfoList[0].getTitlePh()),
+                    () -> assertThat(responseDto.parentingInfoList().get(0).content()).isEqualTo(parentingInfoList[0].getContentPh()),
                     () -> assertThat(responseDto.parentingInfoList().get(0).link()).isEqualTo(parentingInfoList[0].getLink()),
                     () -> assertThat(responseDto.parentingInfoList().get(0).category()).isEqualTo(parentingInfoList[0].getCategory().getValue())
             );

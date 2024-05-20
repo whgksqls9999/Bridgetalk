@@ -9,6 +9,7 @@ import com.ssafy.bridgetalkback.auth.exception.AuthErrorCode;
 import com.ssafy.bridgetalkback.auth.utils.JwtProvider;
 import com.ssafy.bridgetalkback.global.exception.BaseException;
 import com.ssafy.bridgetalkback.kids.domain.Kids;
+import com.ssafy.bridgetalkback.kids.domain.KidsPassword;
 import com.ssafy.bridgetalkback.kids.repository.KidsRepository;
 import com.ssafy.bridgetalkback.kids.service.KidsFindService;
 import com.ssafy.bridgetalkback.parents.domain.Email;
@@ -43,7 +44,7 @@ public class AuthService {
         DuplicateEmail(requestDto.parentsEmail());
 
         Parents parents = Parents.createParents(requestDto.parentsName(), Email.from(requestDto.parentsEmail()),
-                Password.encrypt(requestDto.parentsPassword(), ENCODER), requestDto.parentsNickname(), requestDto.parentsDino());
+                Password.encrypt(requestDto.parentsPassword(), ENCODER), requestDto.parentsNickname(), requestDto.parentsDino(), requestDto.language());
 
         return parentsRepository.save(parents).getUuid();
     }
@@ -52,7 +53,7 @@ public class AuthService {
     public LoginResponseDto login(LoginRequestDto requestDto) {
         log.info("{ AuthService } : 부모로그인 진입");
         Parents parents = parentsFindService.findParentsByParentsEmailAndIsDeleted(requestDto.email());
-        validatePassword(requestDto.password(), parents.getParentsPassword());
+        validateParentsPassword(requestDto.password(), parents.getParentsPassword());
         log.info("{ AuthService } : 비밀번호 일치");
 
         String accessToken = jwtProvider.createAccessToken(parents.getUuid());
@@ -74,7 +75,7 @@ public class AuthService {
         Parents parents = parentsFindService.findParentsByUuidAndIsDeleted(UUID.fromString(requestDto.parentsId()));
 
         Kids kids = Kids.createKids(parents, requestDto.kidsName(), "",
-                requestDto.kidsNickname(), requestDto.kidsDino());
+                requestDto.kidsNickname(), requestDto.kidsDino(), KidsPassword.encrypt(requestDto.kidsPassword(), ENCODER));
 
         UUID kidsId = kidsRepository.save(kids).getUuid();
         Kids findKids = kidsFindService.findKidsByUuidAndIsDeleted(kidsId);
@@ -93,7 +94,7 @@ public class AuthService {
         if(parentsRepository.existsParentsByUuidAndIsDeleted(profileId, 0)){
             log.info("{ AuthService } : 부모 측 - 프로필 조회");
             Parents parents = parentsFindService.findParentsByUuidAndIsDeleted(profileId);
-            validatePassword(password, parents.getParentsPassword());
+            validateParentsPassword(password, parents.getParentsPassword());
             log.info("{ AuthService } : 프로필 비밀번호 인증 성공");
 
             String accessToken = jwtProvider.createAccessToken(parents.getUuid());
@@ -104,7 +105,7 @@ public class AuthService {
         else if(kidsRepository.existsKidsByUuidAndIsDeleted(profileId, 0)) {
             log.info("{ AuthService } : 아이 측 - 프로필 조회");
             Kids kids = kidsFindService.findKidsByUuidAndIsDeleted(profileId);
-            // 아이 추후 구현 예정
+            validateKidsPassword(password, kids.getKidsPassword());
             log.info("{ AuthService } : 프로필 비밀번호 인증 성공");
 
             String accessToken = jwtProvider.createAccessToken(kids.getUuid());
@@ -132,7 +133,13 @@ public class AuthService {
         }
     }
 
-    private void validatePassword(String comparePassword, Password findPassword) {
+    private void validateParentsPassword(String comparePassword, Password findPassword) {
+        if(!findPassword.isSamePassword(comparePassword, ENCODER)) {
+            throw BaseException.type(AuthErrorCode.WRONG_PASSWORD);
+        }
+    }
+
+    private void validateKidsPassword(String comparePassword, KidsPassword findPassword) {
         if(!findPassword.isSamePassword(comparePassword, ENCODER)) {
             throw BaseException.type(AuthErrorCode.WRONG_PASSWORD);
         }

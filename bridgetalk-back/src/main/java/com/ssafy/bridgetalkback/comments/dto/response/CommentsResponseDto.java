@@ -12,6 +12,7 @@ public record CommentsResponseDto(
         String parentsUuid,
         String parentsNickname,
         String commentsContent,
+        int likes,
         LocalDateTime createdAt
 ) {
     public static CommentsResponseDto fromComments(Comments comments, Language language) {
@@ -20,6 +21,7 @@ public record CommentsResponseDto(
                 .parentsUuid(String.valueOf(comments.getParents().getUuid()))
                 .parentsNickname(comments.getParents().getParentsNickname())
                 .commentsContent(language.equals(Language.kor) ? comments.getCommentsContentKor() : comments.getCommentsContentViet())
+                .likes(comments.getLikes())
                 .createdAt(comments.getCreatedAt())
                 .build();
     }

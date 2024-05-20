@@ -1,6 +1,6 @@
 import { handleSubscribeNotification, useUserStore } from '@/pages';
-import { EventSourcePolyfill } from 'event-source-polyfill';
 import { decodeToken } from '@/shared';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useEffect } from 'react';
 
 export function AppSseSubscriber() {
@@ -16,8 +16,11 @@ export function AppSseSubscriber() {
     if (!sseEventSource) {
       sseEventSource = handleSubscribeNotification();
 
+      if (!sseEventSource) return;
       sseEventSource.onmessage = (e) => {
+        console.log('메세지 도착');
         console.log(e);
+        alert(e);
       };
 
       sseEventSource.onerror = (e) => {

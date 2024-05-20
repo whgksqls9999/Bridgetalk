@@ -159,17 +159,17 @@ public class ParentingInfoControllerTest extends ControllerTest {
     }
 
     private ParentingInfoResponseDto getParentingInfoResponseDto() {
-        return new ParentingInfoResponseDto(1L, PARENTINGINFO_01.getTitle_kor(), PARENTINGINFO_01.getContent_kor(),
+        return new ParentingInfoResponseDto(1L, PARENTINGINFO_01.getTitleKor(), PARENTINGINFO_01.getContentKor(),
                 PARENTINGINFO_01.getLink(), PARENTINGINFO_01.getCategory().getValue());
     }
 
     private List<ParentingInfoListDto> createParentingInfoList() {
         List<ParentingInfoListDto> parentingInfoLists = new ArrayList<>();
-        parentingInfoLists.add(new ParentingInfoListDto(1L, PARENTINGINFO_01.getTitle_kor(), PARENTINGINFO_01.getContent_kor(),
+        parentingInfoLists.add(new ParentingInfoListDto(1L, PARENTINGINFO_01.getTitleKor(), PARENTINGINFO_01.getContentKor(),
                 PARENTINGINFO_01.getLink(), PARENTINGINFO_01.getCategory().getValue()));
-        parentingInfoLists.add(new ParentingInfoListDto(2L, PARENTINGINFO_02.getTitle_kor(), PARENTINGINFO_02.getContent_kor(),
+        parentingInfoLists.add(new ParentingInfoListDto(2L, PARENTINGINFO_02.getTitleKor(), PARENTINGINFO_02.getContentKor(),
                 PARENTINGINFO_02.getLink(), PARENTINGINFO_02.getCategory().getValue()));
-        parentingInfoLists.add(new ParentingInfoListDto(3L, PARENTINGINFO_03.getTitle_kor(), PARENTINGINFO_03.getContent_kor(),
+        parentingInfoLists.add(new ParentingInfoListDto(3L, PARENTINGINFO_03.getTitleKor(), PARENTINGINFO_03.getContentKor(),
                 PARENTINGINFO_03.getLink(), PARENTINGINFO_03.getCategory().getValue()));
         return parentingInfoLists;
     }

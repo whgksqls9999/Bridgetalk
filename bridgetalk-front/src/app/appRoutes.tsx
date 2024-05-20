@@ -13,6 +13,8 @@ import {
   ErrorPage,
   ParentInformationNurture,
   ParentInformationNurtureDetail,
+  CreatePage,
+  BoardDetailPage,
 } from '@/pages';
 import {
   ChildPage,
@@ -41,11 +43,12 @@ import {
   TestColoring,
   TestCamera,
   TestDraw,
-  TestPuzzle,
+  // TestPuzzle,
   TestVoice,
   TestWordcloud,
-  TestCharacter,
+  // TestCharacter,
 } from '@/pages';
+import { BoardPage } from '@/pages/parent/ui/community/boardPage';
 
 export function AppRoutes() {
   const [loading, setLoading] = useState(false);
@@ -72,13 +75,13 @@ export function AppRoutes() {
 
   return (
     <>
-      {loading && (
+      {/* {loading && (
         <LoginGuard>
           <LoadingScreen />
         </LoginGuard>
-      )}
+      )} */}
       <Routes>
-        {/* <Route path="/" element={<WelcomePage />} /> */}
+        {/* <Route path="/home" element={<WelcomeScreen />} /> */}
 
         {/* 메인화면 관련 */}
         <Route path="/" element={<Main />}>
@@ -176,6 +179,9 @@ export function AppRoutes() {
           <Route path="information/nurture" element={<ParentInformationNurture />} />
           <Route path="information/nurture/:nurtureId" element={<ParentInformationNurtureDetail />} />
           <Route path="information/word" element={<ParentInformationWord />} />
+          <Route path="board" element={<BoardPage />} />
+          <Route path="board/:boardId" element={<BoardDetailPage />} />
+          <Route path="board/write" element={<CreatePage />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
 
@@ -183,11 +189,11 @@ export function AppRoutes() {
         <Route path="/test" element={<Test />}>
           <Route path="camera" element={<TestCamera />} />
           <Route path="draw" element={<TestDraw />} />
-          <Route path="puzzle" element={<TestPuzzle />} />
+          {/* <Route path="puzzle" element={<TestPuzzle />} /> */}
           <Route path="voice" element={<TestVoice />} />
           <Route path="wordcloud" element={<TestWordcloud />} />
           <Route path="zustand" element={<TeestZustand />} />
-          <Route path="character" element={<TestCharacter />} />
+          {/* <Route path="character" element={<TestCharacter />} /> */}
           <Route path="coloring" element={<TestColoring />} />
         </Route>
 

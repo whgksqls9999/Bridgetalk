@@ -41,6 +41,7 @@ export function ParentInformationNurture() {
     () => ({
       kor: ['예비', '영유아기', '학령기', '사춘기'],
       viet: ['Chuẩn bị', 'Thời kỳ ấu thơ', 'Thời kỳ đến trường', 'Thời kỳ dậy thì'],
+      ph: ['Paghahanda', 'Sanggol na Panahon', 'Edad ng Paaralan', 'Pagdadalaga/Pagbibinata'],
     }),
     [],
   );
@@ -49,6 +50,7 @@ export function ParentInformationNurture() {
     () => ({
       kor: ['번호', '제목', ''],
       viet: ['Số', 'Tiêu đề', ''],
+      ph: ['Numero', 'Pamagat', ''],
     }),
     [],
   );
@@ -57,6 +59,7 @@ export function ParentInformationNurture() {
     () => ({
       kor: '육아 정보',
       viet: 'thông tin nuôi dạy con cái',
+      ph: 'Impormasyon sa Pag-aalaga ng Bata',
     }),
     [],
   );

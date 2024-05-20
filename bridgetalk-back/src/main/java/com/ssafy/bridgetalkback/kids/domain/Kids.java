@@ -33,6 +33,9 @@ public class Kids extends BaseEntity {
     @Column(nullable = false, length = 10)
     private String kidsDino;
 
+    @Embedded
+    private KidsPassword kidsPassword;
+
     @Convert(converter = Role.RoleConverter.class)
     @Column(nullable = false, length = 10)
     private Role role;
@@ -41,18 +44,21 @@ public class Kids extends BaseEntity {
     @JoinColumn(name = "parents_uuid")
     private Parents parents;
 
-    private Kids(Parents parents, String kidsName, String kidsEmail, String kidsNickname, String kidsDino) {
+    private Kids(Parents parents, String kidsName, String kidsEmail, String kidsNickname, String kidsDino,
+                 KidsPassword kidsPassword) {
         this.uuid = UUID.randomUUID();
         this.parents = parents;
         this.kidsName = kidsName;
         this.kidsEmail = kidsEmail;
         this.kidsNickname = kidsNickname;
         this.kidsDino = kidsDino;
+        this.kidsPassword = kidsPassword;
         this.role = Role.USER;
     }
 
-    public static Kids createKids(Parents parents, String kidsName, String kidsEmail, String kidsNickname, String kidsDino) {
-        return new Kids(parents, kidsName, kidsEmail, kidsNickname, kidsDino);
+    public static Kids createKids(Parents parents, String kidsName, String kidsEmail, String kidsNickname, String kidsDino,
+                                  KidsPassword kidsPassword) {
+        return new Kids(parents, kidsName, kidsEmail, kidsNickname, kidsDino, kidsPassword);
     }
 
     public void updateKidsEmail(String updateKidsEmail) {

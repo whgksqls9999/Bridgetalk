@@ -18,11 +18,30 @@ public record ReportsDetailResponseDto(
         LocalDateTime createdAt
 ) {
     public static ReportsDetailResponseDto fromReports(Reports report, List<VideoResponseDto> reportsVideoList, Language language) {
+        if (language.equals(Language.viet)) {
+            return ReportsDetailResponseDto.builder()
+                    .reportsId(report.getReportsId())
+                    .reportsSummary(report.getReportsSummaryViet())
+                    .reportsKeywords(report.getReportsKeywordsViet())
+                    .reportsSolution(report.getReportsSolutionViet())
+                    .reportsVideoList(reportsVideoList)
+                    .createdAt(report.getCreatedAt())
+                    .build();
+        } else if (language.equals(Language.ph)) {
+            return ReportsDetailResponseDto.builder()
+                    .reportsId(report.getReportsId())
+                    .reportsSummary(report.getReportsSummaryPh())
+                    .reportsKeywords(report.getReportsKeywordsPh())
+                    .reportsSolution(report.getReportsSolutionPh())
+                    .reportsVideoList(reportsVideoList)
+                    .createdAt(report.getCreatedAt())
+                    .build();
+        }
         return ReportsDetailResponseDto.builder()
                 .reportsId(report.getReportsId())
-                .reportsSummary(language.equals(Language.kor) ? report.getReportsSummaryKor() : report.getReportsSummaryViet())
-                .reportsKeywords(language.equals(Language.kor) ? report.getReportsKeywordsKor() : report.getReportsKeywordsViet())
-                .reportsSolution(language.equals(Language.kor) ? report.getReportsSolutionKor() : report.getReportsSolutionViet())
+                .reportsSummary(report.getReportsSummaryKor())
+                .reportsKeywords(report.getReportsKeywordsKor())
+                .reportsSolution(report.getReportsSolutionKor())
                 .reportsVideoList(reportsVideoList)
                 .createdAt(report.getCreatedAt())
                 .build();

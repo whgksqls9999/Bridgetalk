@@ -13,6 +13,8 @@ export const Container = styled.div`
     height: 100%;
     padding: 5svw;
 
+    position: relative;
+
     &__side {
       display: flex;
       flex-direction: column;
@@ -26,6 +28,8 @@ export const Container = styled.div`
 
       background-color: pink;
       border-bottom: 2svh solid palevioletred;
+      box-shadow: 0px 10px 10px 0px rgba(255, 255, 255, 0.25) inset, 0px -10px 10px 0px rgba(0, 0, 0, 0.25) inset,
+        0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
       img {
         width: 100%;
@@ -54,10 +58,23 @@ export const Container = styled.div`
     }
 
     &__puzzle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 70svw;
       border-radius: 5svh;
+      box-shadow: 0px 10px 10px 0px rgba(255, 255, 255, 0.25) inset, 0px -10px 10px 0px rgba(0, 0, 0, 0.25) inset,
+        0px 4px 4px 0px rgba(0, 0, 0, 0.25);
       border-bottom: 2svh solid palevioletred;
       background-color: pink;
+
+      * {
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        background-color: palevioletred;
+        border-radius: 1svh;
+      }
     }
   }
 `;

@@ -1,3 +1,4 @@
+import { EventSourcePolyfill } from 'event-source-polyfill';
 import { create } from 'zustand';
 
 interface Store {
@@ -29,8 +30,8 @@ interface Store {
   setAccessToken: (accessToken: string) => void;
 
   // sseEventSource: SSE 알림 구독할 Source
-  sseEventSource: EventSource | null;
-  setSseEventSource: (state: EventSource) => void;
+  sseEventSource: EventSourcePolyfill | null;
+  setSseEventSource: (state: EventSourcePolyfill) => void;
 }
 
 export const useUserStore = create<Store>()((set) => ({
@@ -64,5 +65,5 @@ export const useUserStore = create<Store>()((set) => ({
 
   // sseEventSource: SSE 알림 구독할 Source
   sseEventSource: null,
-  setSseEventSource: (state: EventSource) => set({ sseEventSource: state }),
+  setSseEventSource: (state: EventSourcePolyfill) => set({ sseEventSource: state }),
 }));

@@ -24,11 +24,13 @@ export function TalkingPage() {
   const reportsId = useTalkStore((state) => state.reportsId);
   const isRecording = useTalkStore((state) => state.isRecording);
   const setIsRecording = useTalkStore((state) => state.setIsRecording);
-  const setIsSend = useTalkStore((state) => state.setIsSend);
+  // const setIsSend = useTalkStore((state) => state.setIsSend);
   const isEnd = useTalkStore((state) => state.isEnd);
+  const isStart = useTalkStore((state) => state.isStart);
   const isTalking = useTalkStore((state) => state.isTalking);
   const isWaiting = useTalkStore((state) => state.isWaiting);
   const setIsEnd = useTalkStore((state) => state.setIsEnd);
+  const setIsStart = useTalkStore((state) => state.setIsStart);
   const setIsTalking = useTalkStore((state) => state.setIsTalking);
   const talkStore = useTalkStore();
 
@@ -39,7 +41,6 @@ export function TalkingPage() {
     <S.Container>
       <div className="talking">
         <div className="talking__header">
-          {/* <TalkingHeader /> */}
           <button
             className="talking__header-end"
             onClick={() => {
@@ -55,6 +56,7 @@ export function TalkingPage() {
                 navigate,
                 talkStore.setEmotion,
                 talkStore.setSubtitle,
+                talkStore.isStart,
               );
             }}
           >

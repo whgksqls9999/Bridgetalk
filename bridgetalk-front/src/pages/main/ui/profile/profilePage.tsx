@@ -19,30 +19,18 @@ export function ProfilePage() {
 
   const [profileList, setProfileList] = useState<Profile[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [selectedUser, setSelectedUser] = useState<string>('');
 
-  const { setUserNickname, setUserName, setUserDino, refreshToken, accessToken, setUserId } = useUserStore((state) => ({
-    setUserNickname: state.setUserNickname,
-    setUserName: state.setUserName,
-    setUserDino: state.setUserDino,
-    refreshToken: state.refreshToken,
-    accessToken: state.accessToken,
-    setUserId: state.setUserId,
-  }));
-
-  const setDeleteModalOpenState = useProfileStore((state) => state.setDeleteModalOpenState);
-  const setPasswordCheckModalState = useProfileStore((state) => state.setPasswordCheckModalState);
   const userStore = useUserStore();
 
-  useEffect(() => {
-    handleFetchProfileList(accessToken, setProfileList);
-  }, []);
+  const setDeleteModalOpenState = useProfileStore((state) => state.setDeleteModalOpenState);
+  const setEditProfileModalState = useProfileStore((staet) => staet.setEditProfileModalState);
+  const setPasswordCheckModalState = useProfileStore((state) => state.setPasswordCheckModalState);
 
   useEffect(() => {
-    console.log(profileList);
-    if (profileList.length > 0) {
-      setIsLoading(false);
-    }
-  }, [profileList]);
+    handleFetchProfileList(userStore.accessToken, setProfileList);
+    setIsLoading(false);
+  }, []);
 
   return (
     <S.Container>
@@ -65,39 +53,46 @@ export function ProfilePage() {
       >
         <img src={'assets/img/main/setting.svg'} />
       </button>
+
       <button
         onClick={() => {
-          customAxios.get(`/notification/send-test/${userStore.userId}`).then((res) => {
-            console.log(res);
-          });
+          customAxios
+            .get(`/notification/send-test/${userStore.userId}`)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }}
       >
         sse테스트
       </button>
-      {!isLoading && (
-        <div className="main">
-          <div className="main__title">
-            <img src={'assets/img/main/profile.svg'} />
-          </div>
-          <div className="main__profilelist-wrapper">
+
+      <div className="main">
+        <div className="main__title">
+          <img src={'assets/img/main/profile.svg'} />
+        </div>
+        <div className="main__profilelist-wrapper">
+          {!isLoading ? (
             <div className="main__profilelist">
               {profileList.length > 0 &&
-                profileList.splice(1).map((it, idx) => (
+                profileList.slice(1).map((it, idx) => (
                   <div
-                    className="main__profilelist-item"
+                    className={`main__profilelist-item ${selectedUser === it.userId ? 'selected' : ''}`}
                     key={it.userId}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setPasswordCheckModalState([it.userId, '/child']);
+                      setSelectedUser(it.userId);
                     }}
                   >
                     <div
                       className="main__profilelist-item-edit"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setUserDino(it.userDino);
-                        setUserNickname(it.userNickname);
-                        navigate('/editProfile');
+                        userStore.setUserDino(it.userDino);
+                        userStore.setUserNickname(it.userNickname);
+                        setEditProfileModalState(it.userId);
                       }}
                     >
                       <img src={'assets/img/main/editProfileIcon.svg'} />
@@ -106,24 +101,13 @@ export function ProfilePage() {
                       className="main__profilelist-item-delete"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setDeleteModalOpenState(it.userId);
-                        if (confirm('정말 삭제하시겠습니까?')) {
-                          deleteDeleteProfile(it.userId).then((res) => {
-                            if (res.status === '200') {
-                              alert('삭제 성공');
-                              getProfileList(decodeToken('access')!).then((res) => {
-                                setProfileList([...res!.data.profileList]);
-                              });
-                            }
-                          });
-                        }
-                        // navigate('/editProfile');
+                        setDeleteModalOpenState([it.userId, setProfileList]);
                       }}
                     >
                       <img src={'assets/img/main/deleteicon.svg'} />
                     </button>
                     <div className="main__profilelist-item-dino">
-                      <img src={`assets/img/${it.userDino}.svg`} alt="캐릭터" />
+                      <img src={`assets/dino/${it.userDino}/${it.userDino}.png`} alt="캐릭터" />
                     </div>
                     <div className="main__profilelist-item-title">{it.userName}</div>
                     <div className="main__profilelist-item-nickname">{it.userNickname}</div>
@@ -132,7 +116,7 @@ export function ProfilePage() {
               <div className="main__profilelist-empty">
                 <button
                   onClick={() => {
-                    setUserId(profileList[0].userId);
+                    userStore.setUserId(profileList[0].userId);
                     navigate('/addProfile');
                   }}
                 >
@@ -140,12 +124,20 @@ export function ProfilePage() {
                 </button>
               </div>
             </div>
-          </div>
-          <div className="main__button">
-            <button className="main__button-start">START!</button>
-          </div>
+          ) : null}
         </div>
-      )}
+        <div className="main__button">
+          <button
+            className="main__button-start"
+            onClick={() => {
+              if (!selectedUser) return;
+              setPasswordCheckModalState([selectedUser, '/child']);
+            }}
+          >
+            START!
+          </button>
+        </div>
+      </div>
     </S.Container>
   );
 }

@@ -22,18 +22,18 @@ export async function webmToMp3(audio: Blob, string: boolean = false) {
   } else {
     await ffmpeg.writeFile('input.bin', newFileData);
   }
-  console.log('{webmToMp3: writeFile}');
+  // console.log('{webmToMp3: writeFile}');
   let exec;
   if (!string) {
     exec = await ffmpeg.exec(['-i', 'input.webm', '-vn', '-ab', '192k', 'output.mp3']);
   } else {
     exec = await ffmpeg.exec(['-i', 'input.bin', 'output.mp3']);
   }
-  console.log('{webmToMp3: exec}', exec);
+  // console.log('{webmToMp3: exec}', exec);
   const data: any = await ffmpeg.readFile('output.mp3');
-  console.log('{webmToMp3: readFile}');
+  // console.log('{webmToMp3: readFile}');
   const newBlob = new Blob([data.buffer], { type: 'audio/mpeg' });
-  console.log('{webmToMp3: create new Blob}', newBlob);
+  // console.log('{webmToMp3: create new Blob}', newBlob);
 
   return newBlob;
 }

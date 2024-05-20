@@ -1,68 +1,138 @@
-import { ChildrenProps } from '@/shared';
-import { useRef, RefObject, useEffect, useState, MutableRefObject } from 'react';
-import { capturePicture, connectMedia, startRecordVideo, stopRecordVideo } from '@/pages/Test/model';
-import * as S from '@/styles/test/testCamera.style';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { css } from '@emotion/css';
+import Webcam from 'react-webcam';
+import { Camera } from '@mediapipe/camera_utils';
+import { Pose, Results } from '@mediapipe/pose';
+import { drawDressParts } from './utils/drawParts';
+
+// 이미지 URL을 변수에 직접 할당
+const leftForearmUrl = '/assets/img/child/game/leftForearm.png';
+const rightForearmUrl = '/assets/img/child/game/rightForearm.png';
+const topUrl = '/assets/img/child/game/top.png';
+const bottomUrl = '/assets/img/child/game/bottom.png';
 
 export function TestCamera() {
-  const videoRef: RefObject<HTMLVideoElement> = useRef(null);
-  const canvasRef: RefObject<HTMLCanvasElement> = useRef(null);
-  const streamRef: MutableRefObject<MediaStream | undefined> = useRef();
-  const recorderRef: MutableRefObject<MediaRecorder | undefined> = useRef();
-  const [recordBlob, setRecordBlob] = useState<Blob[]>();
-  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const webcamRef = useRef<Webcam>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const resultsRef = useRef<Results>();
+
+  const [dressImages, setDressImages] = useState({
+    leftForearm: null as HTMLImageElement | null,
+    rightForearm: null as HTMLImageElement | null,
+    top: null as HTMLImageElement | null,
+    bottom: null as HTMLImageElement | null,
+  });
 
   useEffect(() => {
-    if (!streamRef.current) {
-      connectMedia(videoRef, streamRef);
-    }
-
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-      }
+    const loadImage = (src: string) => {
+      return new Promise<HTMLImageElement>((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(img);
+      });
     };
+
+    Promise.all([loadImage(leftForearmUrl), loadImage(rightForearmUrl), loadImage(topUrl), loadImage(bottomUrl)]).then(
+      ([leftForearm, rightForearm, top, bottom]) => {
+        setDressImages({ leftForearm, rightForearm, top, bottom });
+      },
+    );
   }, []);
 
+  const onResults = useCallback(
+    (results: Results) => {
+      resultsRef.current = results;
+      const { leftForearm, rightForearm, top, bottom } = dressImages;
+      if (leftForearm && rightForearm && top && bottom) {
+        const canvasCtx = canvasRef.current!.getContext('2d')!;
+        drawDressParts(canvasCtx, results, { leftForearm, rightForearm, top, bottom });
+      }
+    },
+    [dressImages],
+  );
+
+  useEffect(() => {
+    const pose = new Pose({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
+    });
+
+    pose.setOptions({
+      modelComplexity: 1,
+      smoothLandmarks: true,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5,
+    });
+
+    pose.onResults(onResults);
+
+    if (webcamRef.current !== undefined && webcamRef.current !== null) {
+      const camera = new Camera(webcamRef.current.video!, {
+        onFrame: async () => {
+          await pose.send({ image: webcamRef.current!.video! });
+        },
+        width: 1280,
+        height: 720,
+      });
+      camera.start();
+    }
+  }, [onResults]);
+
+  const OutputData = () => {
+    const results = resultsRef.current!;
+    // console.log(results.poseLandmarks);
+  };
+
   return (
-    <TestCameraContainer>
-      <Video>
-        <video ref={videoRef} autoPlay playsInline controls muted hidden />
-        {recordBlob && recordBlob.length > 0 && (
-          <video controls>
-            <source src={URL.createObjectURL(new Blob(recordBlob, { type: 'video/mp4' }))} type="video/mp4" />
-          </video>
-        )}
-      </Video>
-      <Canvas>
-        <canvas ref={canvasRef} />
-      </Canvas>
-      <Button>
-        <button onClick={() => capturePicture(canvasRef, videoRef)}>사진 캡처</button>
-        {isRecording ? (
-          <button onClick={() => stopRecordVideo(recorderRef, setIsRecording)}>녹화중지</button>
-        ) : (
-          <button onClick={() => startRecordVideo(recorderRef, streamRef, setRecordBlob, setIsRecording)}>
-            녹화하기
-          </button>
-        )}
-      </Button>
-    </TestCameraContainer>
+    <div className={styles.container}>
+      <Webcam
+        audio={false}
+        style={{ visibility: 'hidden' }}
+        width={1280}
+        height={720}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+        videoConstraints={{ width: 1280, height: 720, facingMode: 'user' }}
+      />
+      <canvas ref={canvasRef} className={styles.canvas} width={1280} height={720} />
+      <div className={styles.buttonContainer}>
+        <button className={styles.button} onClick={OutputData}>
+          Output Data
+        </button>
+      </div>
+    </div>
   );
 }
 
-function TestCameraContainer({ children }: ChildrenProps) {
-  return <S.Container>{children}</S.Container>;
-}
+const styles = {
+  container: css`
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+  canvas: css`
+    position: absolute;
+    width: 1280px;
+    height: 720px;
+    background-color: #fff;
+  `,
+  buttonContainer: css`
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  `,
+  button: css`
+    color: #fff;
+    background-color: #0082cf;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    cursor: pointer;
+  `,
+};
 
-// video
-function Video({ children }: ChildrenProps) {
-  return <S.VideoWrapper>{children}</S.VideoWrapper>;
-}
-
-function Canvas({ children }: ChildrenProps) {
-  return <S.CanvasWrapper>{children}</S.CanvasWrapper>;
-}
-
-function Button({ children }: ChildrenProps) {
-  return <S.ButtonWrapper>{children}</S.ButtonWrapper>;
-}
+export default TestCamera;

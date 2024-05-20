@@ -38,7 +38,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/h2-console/**", "/error", "/swagger-ui/**", "/api-docs/**",
-                "/api/auth/signup", "/api/auth/login", "/api/files/**", "/api/auth/nickname-duplicate/**" );
+                "/api/auth/signup", "/api/auth/login", "/api/files/**", "/api/auth/nickname-duplicate/**", "/api/mail/**" );
     }
 
     @Bean
@@ -67,6 +67,10 @@ public class SecurityConfig {
                         .accessDeniedHandler(jwtAccessDeniedHandler))
                 .authorizeHttpRequests(authorizeRequest ->
                         authorizeRequest
+                                .requestMatchers(
+                                        AntPathRequestMatcher.antMatcher("/api/boards/read/**"),
+                                        AntPathRequestMatcher.antMatcher("/api/comments/read/**")
+                                ).permitAll()
                                 .requestMatchers(
                                         AntPathRequestMatcher.antMatcher("/api/**")
                                 ).hasRole("USER")

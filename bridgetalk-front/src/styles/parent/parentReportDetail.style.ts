@@ -10,6 +10,11 @@ export const ContentContainer = styled.div`
   width: 80svw;
   height: 70svh;
 
+  * {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .menu {
     position: absolute;
     top: 0;
@@ -24,11 +29,12 @@ export const ContentContainer = styled.div`
     button {
       background-color: ${color(1).sub};
       border: none;
+      font-family: 'Pretendard-Black';
 
       border-top-left-radius: 1svw;
       border-top-right-radius: 1svw;
 
-      color: ${color(1).bright};
+      color: ${color(0.5).bright};
 
       font-size: 1.5svw;
 
@@ -36,6 +42,10 @@ export const ContentContainer = styled.div`
       height: 5svh;
 
       cursor: pointer;
+    }
+
+    .active {
+      color: ${color(1).bright};
     }
   }
 
@@ -60,7 +70,7 @@ export const ContentContainer = styled.div`
       right: 2svw;
       transform: translateY(-50%);
 
-      font-family: 'DNF';
+      font-family: 'Pretendard-Black';
       font-size: 2.5svw;
       color: ${color(1).bright};
       z-index: 0;
@@ -107,7 +117,8 @@ export const ContentContainer = styled.div`
         border-radius: 1svw;
         padding: 1.5svh 1.5svw;
 
-        font-size: 2svw;
+        font-size: 1.6svw;
+
         color: ${color(1).bright};
 
         box-shadow: 0 0.5svh 0.4svh ${color(0.5).dark};
@@ -127,24 +138,51 @@ export const ContentContainer = styled.div`
 
           box-shadow: inset 0 0.5svh 0.4svh ${color(0.5).bright};
         }
+      }
 
-        /* &::before {
-          position: absolute;
-          top: 0;
-          left: 0;
+      .replys {
+        display: flex;
+        flex-direction: column;
+        gap: 1svh;
+        padding-left: 1svw;
+
+        font-size: 1.2svw;
+
+        &__wrapper {
+          height: 40svh;
+          overflow-y: scroll;
+
+          display: flex;
+          flex-direction: column;
+          gap: 1svh;
+        }
+
+        &-header {
+          display: flex;
+          gap: 1svw;
+        }
+
+        &-none {
           width: 100%;
           height: 100%;
 
-          content: '';
-          border-radius: 1svw;
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
-          box-shadow: inset 0 -0.5svh 0.4svh ${color(0.25).dark};
-        } */
+          font-size: 2svw;
+        }
+
+        &-body {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
     }
 
     div {
-      font-family: 'DNF';
+      font-family: 'Pretendard-Black';
     }
   }
 `;
@@ -152,12 +190,15 @@ export const ContentContainer = styled.div`
 export const Keywords = styled.div`
   display: flex;
   gap: 1svw;
+  font-family: 'Pretendard-Black';
 `;
 
 export const Summary = styled.div`
   width: 100%;
+  font-family: 'Pretendard-Black';
 `;
 
 export const Solution = styled.div`
   width: 100%;
+  font-family: 'Pretendard-Black';
 `;

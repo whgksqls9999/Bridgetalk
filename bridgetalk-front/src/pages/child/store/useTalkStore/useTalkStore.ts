@@ -18,6 +18,8 @@ interface Store {
   emotion: string;
   setEmotion: (state: string) => void;
   resetStore: () => void;
+  isStart: boolean;
+  setIsStart: (state: boolean) => void;
 }
 
 const initialState: Omit<
@@ -31,6 +33,7 @@ const initialState: Omit<
   | 'setSubtitle'
   | 'setEmotion'
   | 'resetStore'
+  | 'setIsStart'
 > = {
   reportsId: 0,
   isRecording: false,
@@ -40,6 +43,7 @@ const initialState: Omit<
   isEnd: false,
   subtitle: '',
   emotion: 'idle',
+  isStart: false,
 };
 
 export const useTalkStore = create<Store>()((set) => ({
@@ -53,4 +57,5 @@ export const useTalkStore = create<Store>()((set) => ({
   setSubtitle: (state: string) => set({ subtitle: state }),
   setEmotion: (state: string) => set({ emotion: state }),
   resetStore: () => set({ ...initialState }),
+  setIsStart: (state) => set({ isStart: state }),
 }));

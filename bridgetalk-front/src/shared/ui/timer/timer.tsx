@@ -48,9 +48,9 @@ export function Timer({
       setTime(0);
       clearInterval(timerRef.current);
     }
-    console.log(`{ Recording 상태 변화 ${isRecording} ${isEnd}}`);
+    // console.log(`{ Recording 상태 변화 ${isRecording} ${isEnd}}`);
     if (isEnd) {
-      console.log('{ 타이머 종료 }');
+      // console.log('{ 타이머 종료 }');
       clearInterval(timerRef.current);
     }
 

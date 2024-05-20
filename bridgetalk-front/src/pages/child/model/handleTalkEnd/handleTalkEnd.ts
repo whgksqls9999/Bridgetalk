@@ -14,7 +14,15 @@ export async function handleTalkEnd(
   navigate?: any,
   setEmotion?: any,
   setSubtitle?: any,
+  isStart?: any,
 ) {
+  // 대화 시작 이전에 나가기 가능
+  if (!isStart) {
+    navigate('/child');
+    return;
+  }
+
+  // 대화가 모두 끝났을 땐 나가기 가능
   if (!isTalking && isEnd) {
     navigate('/child');
     return;

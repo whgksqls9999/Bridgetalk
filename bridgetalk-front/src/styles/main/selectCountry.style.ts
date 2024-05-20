@@ -23,11 +23,16 @@ export const Container = styled.div`
       display: flex;
       gap: 4svw;
 
+      .active {
+        background-color: ${color(1).main};
+      }
+
       button {
         width: 26svw;
         height: 27svh;
 
         ${button}
+        background-color: ${color(1).sub};
 
         border-radius: 5svw;
 
@@ -44,8 +49,7 @@ export const Container = styled.div`
         color: ${color(1).white};
       }
 
-      &__china,
-      &__taiwan {
+      &__china {
         background-color: ${color(1).gray} !important;
 
         position: relative;

@@ -16,6 +16,7 @@ export function color(alpha: number) {
     white: `rgba(255, 255, 255, ${alpha})`,
     dark: `rgba(64, 64, 64, ${alpha})`,
     black: `rgba(17, 17, 17, ${alpha})`,
+    _main: `rgba(255, 65, 65,${alpha})`,
   };
 }
 

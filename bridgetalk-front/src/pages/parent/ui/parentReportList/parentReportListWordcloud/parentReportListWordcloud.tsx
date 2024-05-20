@@ -13,6 +13,7 @@ export function ParentReportListWordcloud() {
     () => ({
       kor: '키워드 분석',
       viet: 'Phân tích từ khoá',
+      ph: '',
     }),
     [],
   );

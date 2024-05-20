@@ -32,7 +32,7 @@ public class ClovaSpeechServiceTest extends ServiceTest {
     @DisplayName("Clova Stt 변환 성공")
     public void clova_stt() throws IOException {
         // Given
-        String fileUrl = "https://bridge-talk.s3.ap-northeast-2.amazonaws.com/test-k1.mp3";
+        String fileUrl = "https://bridge-talk.s3.ap-northeast-2.amazonaws.com/test/test-k1.mp3";
 
         // When
         String response = clovaSpeechService.stt(fileUrl);

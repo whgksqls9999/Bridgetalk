@@ -1,6 +1,7 @@
 package com.ssafy.bridgetalkback.parents.controller;
 
 import com.ssafy.bridgetalkback.global.annotation.ExtractPayload;
+import com.ssafy.bridgetalkback.parents.dto.request.DeleteProfileRequestDto;
 import com.ssafy.bridgetalkback.parents.dto.request.UpdateProfileRequestDto;
 import com.ssafy.bridgetalkback.parents.service.ProfileService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,11 +28,11 @@ public class ProfileController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{profileId}")
-    public ResponseEntity<Void> deleteProfile(@ExtractPayload String userId, @PathVariable String profileId) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteProfile(@ExtractPayload String userId, @RequestBody DeleteProfileRequestDto requestDto) {
         log.info("{ ProfileController } : 프로필 삭제 진입");
 
-        profileService.deleteProfile(UUID.fromString(profileId));
+        profileService.deleteProfile(requestDto);
         return ResponseEntity.ok().build();
     }
 }

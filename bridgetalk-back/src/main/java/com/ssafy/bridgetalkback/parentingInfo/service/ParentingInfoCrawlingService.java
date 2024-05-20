@@ -35,12 +35,12 @@ ParentingInfoCrawlingService {
         map.put("75304", "PUBERTY");
 
         for(String key : map.keySet()) {
-            if(!key.equals("75304")) continue;
+            // if(!key.equals("75304")) continue;
             List<String> urlList = createUrlList(key, Category.valueOf(map.get(key)));
             for(String url : urlList) {
                 ParentingInfoCrawlingDto dto = parentingInfoCrawling(url, Category.valueOf(map.get(key)));
-                parentingInfoService.createParentingInfo(dto.title_kor(), dto.title_viet(),
-                        dto.content_kor(), dto.content_viet(), dto.link(), dto.category());
+                parentingInfoService.createParentingInfo(dto.titleKor(), dto.titleViet(), dto.titlePh(),
+                        dto.contentKor(), dto.contentViet(), dto.contentPh(), dto.link(), dto.category());
             }
         }
         log.info("{ ParentingInfoCrawlingService } : startParentingInfoCrawling 완료");
@@ -52,10 +52,14 @@ ParentingInfoCrawlingService {
         log.info("{ ParentingInfoCrawlingService } : url - "+url);
         Document document = Jsoup.connect(url).get();
 
-        String title_kor = document.select(".brdViewTit").text();
-        String title_viet = createTranslate("("+title_kor+")");
-        String content_kor = "";
-        String content_viet = "";
+        String titleKor = document.select(".brdViewTit").text();
+        String titleViet = createTranslateViet("("+titleKor+")");
+        String titlePh = createTranslatePh("("+titleKor+")");
+        String contentKor = "";
+        String contentViet = "";
+        String contentPh = "";
+
+        String contentEng = "";
 
         Elements elements = document.select(".brdViewCont p");
 
@@ -67,16 +71,24 @@ ParentingInfoCrawlingService {
             else
                 content_sb.append(kor);
         }
-        content_kor = removeUnnecessarySentencesKor(content_sb.toString());
-        content_viet = createParagraphTranslateViet(createParagraphTranslateEng(content_kor));
-        content_viet = removeUnnecessarySentencesViet(content_viet);
+        contentKor = removeUnnecessarySentencesKor(content_sb.toString());
+        contentEng = createParagraphTranslateEng(contentKor);
+        contentViet = createParagraphTranslateViet(contentEng);
+        contentViet = removeUnnecessarySentencesViet(contentViet);
+        contentPh = createParagraphTranslatePh(contentEng);
+        contentPh = removeUnnecessarySentencesPh(contentPh);
 
         log.info("{ ParentingInfoCrawlingService } : parentingInfoCrawling 성공");
 
-        return new ParentingInfoCrawlingDto(title_kor, title_viet, content_kor, content_viet, url, age);
+        return new ParentingInfoCrawlingDto(titleKor, titleViet, titlePh, contentKor, contentViet, contentPh ,url, age);
     }
 
     private String removeUnnecessarySentencesViet(String text) {
+        text = text.replaceAll("니다.", "");
+        return text;
+    }
+
+    private String removeUnnecessarySentencesPh(String text) {
         text = text.replaceAll("니다.", "");
         return text;
     }
@@ -99,10 +111,19 @@ ParentingInfoCrawlingService {
         return urlList;
     }
 
-    private String createTranslate(String text) {
+    private String createTranslateViet(String text) {
         log.info("{ ParentingInfoCrawlingService.createTranslate }");
         String transformedText = "";
-        transformedText = chatGptService.createPrompt(text, ChatGptRequestCode.TRANSLATE);
+        transformedText = chatGptService.createPrompt(text, ChatGptRequestCode.TRANSLATE_VIET);
+        log.info(">> transformedText : {}", transformedText);
+
+        return transformedText;
+    }
+
+    private String createTranslatePh(String text) {
+        log.info("{ ParentingInfoCrawlingService.createTranslate }");
+        String transformedText = "";
+        transformedText = chatGptService.createPrompt(text, ChatGptRequestCode.TRANSLATE_PH);
         log.info(">> transformedText : {}", transformedText);
 
         return transformedText;
@@ -121,6 +142,15 @@ ParentingInfoCrawlingService {
         log.info("{ ParentingInfoCrawlingService.createTranslate }");
         String transformedText = "";
         transformedText = chatGptService.createPrompt(text, ChatGptRequestCode.PARAGRAPH_TRANSLATE_VIET);
+        log.info(">> transformedText : {}", transformedText);
+
+        return transformedText;
+    }
+
+    private String createParagraphTranslatePh(String text) {
+        log.info("{ ParentingInfoCrawlingService.createTranslate }");
+        String transformedText = "";
+        transformedText = chatGptService.createPrompt(text, ChatGptRequestCode.PARAGRAPH_TRANSLATE_PH);
         log.info(">> transformedText : {}", transformedText);
 
         return transformedText;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { button, color } from './common.style';
+import { button, color, insetShadow } from './common.style';
 
 export const Container = styled.div`
   display: flex;
@@ -60,7 +60,31 @@ export const Container = styled.div`
       transform: translateY(-50%);
       cursor: pointer;
 
-      box-shadow: inset 0 -1svh 1svh ${color(0.25).black};
+      &::after {
+        ${insetShadow}
+        border-radius: 15svw;
+        box-shadow: inset 0 0.5svh 0.4svh ${color(0.5).white};
+      }
+
+      &::before {
+        ${insetShadow}
+        border-radius: 15svw;
+        box-shadow: inset 0 -0.5svh 0.4svh ${color(0.5).black};
+      }
+
+      &:hover {
+        &::after {
+          ${insetShadow}
+          border-radius: 15svw;
+          box-shadow: inset 0 0.5svh 0.4svh ${color(0.4).white};
+        }
+
+        &::before {
+          ${insetShadow}
+          border-radius: 15svw;
+          box-shadow: inset 0 -0.5svh 0.4svh ${color(0.4).black};
+        }
+      }
     }
   }
 
@@ -81,6 +105,8 @@ export const Container = styled.div`
     width: 19.2svw;
     height: 12svh;
     font-size: 2.5svw;
+
+    cursor: pointer;
 
     img {
       width: 3svw;

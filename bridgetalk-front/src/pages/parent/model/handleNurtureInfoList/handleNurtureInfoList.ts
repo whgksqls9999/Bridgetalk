@@ -1,7 +1,7 @@
 import { getNurtureInfoList } from '../../query';
 
 export async function handleNurtureInfoList(
-  language: 'kor' | 'viet',
+  language: 'kor' | 'viet' | 'ph',
   setInfoList: any,
   page: number,
   setLastPage: any,
@@ -12,8 +12,8 @@ export async function handleNurtureInfoList(
 
     setInfoList(fetchData.data.parentingInfoList);
     setLastPage(fetchData.data.pageInfo.totalPages);
-    console.log('{handleNurtureInfoList: fetchData', fetchData);
+    // console.log('{handleNurtureInfoList: fetchData', fetchData);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 }

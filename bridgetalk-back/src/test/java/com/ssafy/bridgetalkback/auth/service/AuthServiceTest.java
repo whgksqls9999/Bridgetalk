@@ -120,7 +120,8 @@ public class AuthServiceTest extends ServiceTest {
                     () -> {
                         RefreshToken findRefreshToken = refreshTokenRedisRepository.findById(parents.getUuid()).orElseThrow();
                         assertThat(findRefreshToken.getRefreshToken()).isEqualTo(loginResponseDto.refreshToken());
-                    }
+                    },
+                    () -> assertThat(loginResponseDto.language()).isEqualTo(parents.getLanguage())
             );
         }
     }
@@ -199,6 +200,7 @@ public class AuthServiceTest extends ServiceTest {
                         RefreshToken findRefreshToken = refreshTokenRedisRepository.findById(parents.getUuid()).orElseThrow();
                         assertThat(findRefreshToken.getRefreshToken()).isEqualTo(parentsLoginResponseDto.refreshToken());
                     },
+                    () -> assertThat(parentsLoginResponseDto.language()).isEqualTo(parents.getLanguage()),
                     () -> assertThat(kidsLoginResponseDto.userId()).isEqualTo(String.valueOf(kids.getUuid())),
                     () -> assertThat(kidsLoginResponseDto.userName()).isEqualTo(kids.getKidsName()),
                     () -> assertThat(kidsLoginResponseDto.userEmail()).isEqualTo(kids.getKidsEmail()),
@@ -229,7 +231,7 @@ public class AuthServiceTest extends ServiceTest {
 
     private ParentsSignupRequestDto createParentsSignupRequestDto() {
         return new ParentsSignupRequestDto(SUNKYOUNG.getParentsEmail(), SUNKYOUNG.getParentsPassword(), SUNKYOUNG.getParentsName(),
-                SUNKYOUNG.getParentsNickname(), SUNKYOUNG.getParentsDino());
+                SUNKYOUNG.getParentsNickname(), SUNKYOUNG.getParentsDino(), SUNKYOUNG.getLanguage());
     }
 
     private LoginRequestDto createLoginRequestDto() {
@@ -241,11 +243,12 @@ public class AuthServiceTest extends ServiceTest {
     }
 
     private KidsSignupRequestDto createKidsSignupRequestDto() {
-        return new KidsSignupRequestDto(String.valueOf(parents.getUuid()), JIYEONG.getKidsName(), JIYEONG.getKidsNickname(), JIYEONG.getKidsDino());
+        return new KidsSignupRequestDto(String.valueOf(parents.getUuid()), JIYEONG.getKidsName(), JIYEONG.getKidsNickname(),
+                JIYEONG.getKidsDino(), JIYEONG.getKidsPassword());
     }
 
     private ProfileLoginRequestDto createKidsProfileLoginRequestDto() {
-        return new ProfileLoginRequestDto(String.valueOf(kids.getUuid()), "임시비밀번호(추후구현예정)");
+        return new ProfileLoginRequestDto(String.valueOf(kids.getUuid()), JIYEONG.getKidsPassword());
     }
 
     private ProfileLoginRequestDto createParentsProfileLoginRequestDto() {

@@ -20,12 +20,12 @@ public class ParentingInfoService {
     private final ParentingInfoFindService parentingInfoFindService;
 
     @Transactional
-    public Long createParentingInfo(String title_kor, String title_viet, String content_kor, String content_viet,
-                           String link, Category category) {
+    public Long createParentingInfo(String titleKor, String titleViet, String titlePh, String contentKor, String contentViet,
+                           String contentPh, String link, Category category) {
         log.info("{ ParentingInfoService } : 육아정보 등록 진입");
 
-        ParentingInfo parentingInfo = ParentingInfo.createParentingInfo(title_kor, title_viet, content_kor,
-                content_viet, link, category);
+        ParentingInfo parentingInfo = ParentingInfo.createParentingInfo(titleKor, titleViet, titlePh, contentKor,
+                contentViet, contentPh, link, category);
         ParentingInfo savedParentingInfo = parentingInfoRepository.save(parentingInfo);
         log.info("{ ParentingInfoService } : 육아정보 등록 성공");
         return savedParentingInfo.getParentingInfoId();

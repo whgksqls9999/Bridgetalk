@@ -69,7 +69,10 @@ export const Container = styled.div`
     padding: 1svh 1svw;
     border-radius: 2svw;
     box-shadow: 0 0.5svh 0.4svh ${color(0.5).dark};
-
+    .time {
+      font-size: 1svw;
+      font-family: 'Pretendard-Black';
+    }
     .dino {
       img {
         width: 10svw;

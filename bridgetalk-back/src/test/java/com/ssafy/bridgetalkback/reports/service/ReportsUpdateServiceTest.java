@@ -54,10 +54,13 @@ public class ReportsUpdateServiceTest extends ServiceTest {
                 () -> assertThat(newReports.getReportsOriginContent()).isEqualTo(reports.getReportsOriginContent()),
                 () -> assertThat(newReports.getReportsSummaryKor()).isEqualTo(reports.getReportsSummaryKor()),
                 () -> assertThat(newReports.getReportsSummaryViet()).isEqualTo(reports.getReportsSummaryViet()),
+                () -> assertThat(newReports.getReportsSummaryPh()).isEqualTo(reports.getReportsSummaryPh()),
                 () -> assertThat(newReports.getReportsKeywordsKor()).isEqualTo(reports.getReportsKeywordsKor()),
                 () -> assertThat(newReports.getReportsKeywordsViet()).isEqualTo(reports.getReportsKeywordsViet()),
+                () -> assertThat(newReports.getReportsKeywordsPh()).isEqualTo(reports.getReportsKeywordsPh()),
                 () -> assertThat(newReports.getReportsSolutionKor()).isEqualTo(reports.getReportsSolutionKor()),
-                () -> assertThat(newReports.getReportsSolutionViet()).isEqualTo(reports.getReportsSolutionViet())
+                () -> assertThat(newReports.getReportsSolutionViet()).isEqualTo(reports.getReportsSolutionViet()),
+                () -> assertThat(newReports.getReportsSolutionPh()).isEqualTo(reports.getReportsSolutionPh())
         );
     }
 
@@ -68,7 +71,7 @@ public class ReportsUpdateServiceTest extends ServiceTest {
         Long reportsId = reports.getReportsId();
 
         //when
-        reportsService.createReportAsync(reportsId);
+        reportsService.createReportAsync(reportsId, kids.getUuid().toString());
         Reports newReports = reportsFindService.findByReportsIdAndIsDeleted(reportsId);
 
         //then
@@ -78,10 +81,40 @@ public class ReportsUpdateServiceTest extends ServiceTest {
                 () -> assertThat(newReports.getReportsOriginContent()).isEqualTo(reports.getReportsOriginContent()),
                 () -> assertThat(newReports.getReportsSummaryKor()).isEqualTo(reports.getReportsSummaryKor()),
                 () -> assertThat(newReports.getReportsSummaryViet()).isEqualTo(reports.getReportsSummaryViet()),
+                () -> assertThat(newReports.getReportsSummaryPh()).isEqualTo(reports.getReportsSummaryPh()),
                 () -> assertThat(newReports.getReportsKeywordsKor()).isEqualTo(reports.getReportsKeywordsKor()),
                 () -> assertThat(newReports.getReportsKeywordsViet()).isEqualTo(reports.getReportsKeywordsViet()),
+                () -> assertThat(newReports.getReportsKeywordsPh()).isEqualTo(reports.getReportsKeywordsPh()),
                 () -> assertThat(newReports.getReportsSolutionKor()).isEqualTo(reports.getReportsSolutionKor()),
-                () -> assertThat(newReports.getReportsSolutionViet()).isEqualTo(reports.getReportsSolutionViet())
+                () -> assertThat(newReports.getReportsSolutionViet()).isEqualTo(reports.getReportsSolutionViet()),
+                () -> assertThat(newReports.getReportsSolutionPh()).isEqualTo(reports.getReportsSolutionPh())
+        );
+    }
+
+    @Test
+    @DisplayName("(비동기) 아이 속마음 레포트 저장에 성공한다.")
+    void updateReportsAsync2() throws ExecutionException, InterruptedException {
+        //given
+        Long reportsId = reports.getReportsId();
+
+        //when
+        reportsService.createReportAsync2(reportsId, kids.getUuid().toString());
+        Reports newReports = reportsFindService.findByReportsIdAndIsDeleted(reportsId);
+
+        //then
+        assertAll(
+                () -> assertThat(newReports.getReportsId()).isEqualTo(reports.getReportsId()),
+                () -> assertThat(newReports.getKids()).isEqualTo(reports.getKids()),
+                () -> assertThat(newReports.getReportsOriginContent()).isEqualTo(reports.getReportsOriginContent()),
+                () -> assertThat(newReports.getReportsSummaryKor()).isEqualTo(reports.getReportsSummaryKor()),
+                () -> assertThat(newReports.getReportsSummaryViet()).isEqualTo(reports.getReportsSummaryViet()),
+                () -> assertThat(newReports.getReportsSummaryPh()).isEqualTo(reports.getReportsSummaryPh()),
+                () -> assertThat(newReports.getReportsKeywordsKor()).isEqualTo(reports.getReportsKeywordsKor()),
+                () -> assertThat(newReports.getReportsKeywordsViet()).isEqualTo(reports.getReportsKeywordsViet()),
+                () -> assertThat(newReports.getReportsKeywordsPh()).isEqualTo(reports.getReportsKeywordsPh()),
+                () -> assertThat(newReports.getReportsSolutionKor()).isEqualTo(reports.getReportsSolutionKor()),
+                () -> assertThat(newReports.getReportsSolutionViet()).isEqualTo(reports.getReportsSolutionViet()),
+                () -> assertThat(newReports.getReportsSolutionPh()).isEqualTo(reports.getReportsSolutionPh())
         );
     }
 }

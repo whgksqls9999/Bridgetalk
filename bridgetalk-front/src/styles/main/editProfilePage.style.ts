@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { button, color } from './common.style';
+import { darken } from 'polished';
 
 export const Container = styled.div`
   width: 100svw;
@@ -62,6 +63,43 @@ export const Container = styled.div`
           font-size: 3.3svw;
         }
 
+        &-password {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 2.6svw;
+
+          .flex {
+            display: flex;
+            gap: 2svw;
+          }
+
+          &-input {
+            width: 100%;
+            height: 13.9svh;
+            border: 1svw solid ${color(1).main};
+            border-radius: 5.2svw;
+            font-family: 'DNF';
+            font-size: 2.5svw;
+            padding: 1.2svh 2svw;
+          }
+
+          &-title {
+            img {
+              width: 24svw;
+            }
+          }
+        }
+
+        &-passwordcheck {
+          &-title {
+            img {
+              width: 24svw;
+            }
+          }
+        }
+
         &-nickname {
           display: flex;
           flex-direction: column;
@@ -71,6 +109,7 @@ export const Container = styled.div`
 
           .flex {
             display: flex;
+            gap: 2svw;
           }
 
           &-title {
@@ -85,10 +124,11 @@ export const Container = styled.div`
             border: 1svw solid ${color(1).main};
             border-radius: 5.2svw;
             font-family: 'DNF';
-            font-size: 3.3svw;
+            font-size: 2.5svw;
             padding: 1.2svh 2svw;
           }
         }
+
         &-name {
           display: flex;
           flex-direction: column;
@@ -127,6 +167,8 @@ export const Container = styled.div`
       background-color: transparent;
       border: none;
 
+      cursor: pointer;
+
       color: ${color(1).white};
       font-family: 'DNF';
       font-size: 2.5svw;
@@ -141,6 +183,13 @@ export const Container = styled.div`
 
       img {
         width: 3svw;
+      }
+
+      &:hover {
+        background-color: ${color(1)._main};
+      }
+      &:active {
+        background-color: ${color(1).main};
       }
     }
   }
@@ -198,6 +247,12 @@ export const Container = styled.div`
 
     button {
       ${button}
+
+      cursor: pointer;
+
+      &:hover {
+        background-color: ${color(1)._main};
+      }
 
       width: 19.2svw;
       height: 12svh;

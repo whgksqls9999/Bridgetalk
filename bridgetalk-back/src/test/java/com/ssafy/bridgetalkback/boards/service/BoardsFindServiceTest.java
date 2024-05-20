@@ -3,6 +3,7 @@ package com.ssafy.bridgetalkback.boards.service;
 import com.ssafy.bridgetalkback.boards.domain.Boards;
 import com.ssafy.bridgetalkback.boards.exception.BoardsErrorCode;
 import com.ssafy.bridgetalkback.common.ServiceTest;
+import com.ssafy.bridgetalkback.global.Language;
 import com.ssafy.bridgetalkback.global.exception.BaseException;
 import com.ssafy.bridgetalkback.kids.domain.Kids;
 import com.ssafy.bridgetalkback.parents.domain.Parents;
@@ -39,7 +40,7 @@ public class BoardsFindServiceTest extends ServiceTest {
         Parents parents = parentsRepository.save(SUNKYOUNG.toParents());
         Kids kids = kidsRepository.save(JIYEONG.toKids(parents));
         Reports reports = reportsRepository.save(REPORTS_01.toReports(kids));
-        reportsUpdateService.createReportAsync(reports.getReportsId());
+        reportsUpdateService.createReportAsync(reports.getReportsId(), kids.getUuid().toString());
         boards = boardsRepository.save(BOARDS_01.toBoards(reports, parents));
     }
 

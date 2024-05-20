@@ -36,6 +36,7 @@ public class ReportsController {
     @GetMapping("/{kidsId}/{language}")
     public ResponseEntity<List<ReportsListResponseDto>> reportsList(
             @ExtractPayload String userId, @PathVariable String kidsId, @PathVariable Language language) {
+//        log.info("====================== kidsId : {}", kidsId);
         log.info("{ ReportsController } : 아이속마음 리스트 조회 진입");
         return ResponseEntity.ok(reportsService.reportsList(UUID.fromString(userId), UUID.fromString(kidsId), language));
     }

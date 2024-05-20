@@ -36,9 +36,9 @@ public class PuzzleController {
         return ResponseEntity.ok(puzzleService.puzzleDetail(puzzleId));
     }
 
-    @GetMapping
-    public ResponseEntity<PuzzleListResponseDto> puzzleList(@ExtractPayload String userId) {
+    @GetMapping("/list/{nation}")
+    public ResponseEntity<PuzzleListResponseDto> puzzleList(@ExtractPayload String userId, @PathVariable String nation) {
         log.info("{ PuzzleController } : 퍼즐 리스트 조회 진입");
-        return ResponseEntity.ok(puzzleService.puzzleList());
+        return ResponseEntity.ok(puzzleService.puzzleList(nation));
     }
 }

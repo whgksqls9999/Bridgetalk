@@ -1,8 +1,5 @@
-import { Dino } from '@/pages/child/ui/talk/components/dino';
-import { SelectDino } from '@/pages/main/ui/sign/components/selectDino';
 import { useReportStore } from '@/pages/parent/store';
 import * as S from '@/styles/parent/parentReportListItem.style';
-import { Canvas } from '@react-three/fiber';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +11,7 @@ interface Props {
   uuid: string;
   name: string;
   nickname: string;
+  dino: string;
 }
 
 export function ParentReportListItem({
@@ -24,6 +22,7 @@ export function ParentReportListItem({
   uuid,
   name,
   nickname,
+  dino,
 }: Props) {
   const navigate = useNavigate();
   const [date, setDate] = useState<string[]>([]);
@@ -33,6 +32,7 @@ export function ParentReportListItem({
     () => ({
       kor: ['년', '월', '일'],
       viet: ['Năm', 'tháng', 'ngày'],
+      ph: ['Taon', 'Buwan', 'Araw'],
     }),
     [],
   );
@@ -44,7 +44,9 @@ export function ParentReportListItem({
   return (
     <S.Container onClick={() => navigate(`${reportsId}`)}>
       <S.Content>
-        <div className="left"></div>
+        <div className="left">
+          <img src={`/assets/dino/${dino}/${dino}.png`} alt="dino" />
+        </div>
         <div className="right">
           <div className="right__date">
             {date &&

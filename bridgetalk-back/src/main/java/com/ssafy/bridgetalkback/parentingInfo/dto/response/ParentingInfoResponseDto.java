@@ -15,10 +15,30 @@ public record ParentingInfoResponseDto(
     public static ParentingInfoResponseDto from(ParentingInfo parentingInfo, Language language) {
         return ParentingInfoResponseDto.builder()
                 .parentingInfoId(parentingInfo.getParentingInfoId())
-                .title(language.equals(Language.kor) ? parentingInfo.getTitle_kor() : parentingInfo.getTitle_viet())
-                .content(language.equals(Language.kor) ? parentingInfo.getContent_kor() : parentingInfo.getContent_viet())
+                .title(selectTitle(parentingInfo, language))
+                .content(selectContent(parentingInfo, language))
                 .link(parentingInfo.getLink())
                 .category(parentingInfo.getCategory().getValue())
                 .build();
+    }
+
+    private static String selectTitle(ParentingInfo parentingInfo, Language language) {
+        String title = null;
+        switch (language) {
+            case kor -> title = parentingInfo.getTitleKor();
+            case viet -> title = parentingInfo.getTitleViet();
+            case ph -> title = parentingInfo.getTitlePh();
+        }
+        return title;
+    }
+
+    private static String selectContent(ParentingInfo parentingInfo, Language language) {
+        String title = null;
+        switch (language) {
+            case kor -> title = parentingInfo.getContentKor();
+            case viet -> title = parentingInfo.getContentViet();
+            case ph -> title = parentingInfo.getContentPh();
+        }
+        return title;
     }
 }

@@ -1,10 +1,10 @@
-import { useRef, useEffect, useMemo, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useFrame, useLoader, extend } from '@react-three/fiber';
 import { AnimationMixer } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { useTalkStore } from '@/pages/child/store';
-import { postProfileLogin, useUserStore } from '@/pages/main';
+import { postProfileLogin } from '@/pages/main';
 import { getUUIDbyToken } from '@/shared';
 import { getDinoEmotion } from '@/pages/child/model';
 
@@ -14,12 +14,32 @@ export function Dino() {
   const setIsTalking = useTalkStore((state) => state.setIsTalking);
   const emotion = useTalkStore((state) => state.emotion);
   const isEnd = useTalkStore((state) => state.isEnd);
-  const [size, setSize] = useState<number>(1);
+  const setIsStart = useTalkStore((state) => state.setIsStart);
+  const [scale, setScale] = useState<number>(1);
   const [dino, setDino] = useState<string>(sessionStorage.getItem('dino') ?? 'D1');
-  const [act, setAct] = useState('idle');
+  const [act, setAct] = useState<string>('idle');
+  const [gltf, setGltf] = useState<any>(null);
 
-  const gltf = useLoader(GLTFLoader, `/assets/dino/${dino}/${act}.glb`);
   const mixer = useRef<AnimationMixer | null>(null);
+
+  const model = useLoader(GLTFLoader, `/assets/dino/${dino}/${act}.glb`, (loader) => {
+    loader.manager.onStart = (url, itemsLoaded, itemsTotal) => {
+      // console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
+    };
+    loader.manager.onLoad = () => {
+      // console.log('Loading complete!');
+    };
+    loader.manager.onProgress = (url, itemsLoaded, itemsTotal) => {
+      // console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
+    };
+    loader.manager.onError = (url) => {
+      // console.log('There was an error loading ' + url);
+    };
+  });
+
+  useEffect(() => {
+    setGltf(model);
+  }, [model]);
 
   useEffect(() => {
     const sessionDino = sessionStorage.getItem('dino');
@@ -38,11 +58,15 @@ export function Dino() {
 
   useEffect(() => {
     setAct(getDinoEmotion(emotion));
-    console.log(getDinoEmotion(emotion));
+    // console.log(getDinoEmotion(emotion));
   }, [emotion]);
 
   useEffect(() => {
-    if (gltf.animations.length > 0) {
+    if (gltf && gltf.animations && gltf.animations.length > 0) {
+      if (mixer.current) {
+        mixer.current.stopAllAction();
+        mixer.current.uncacheRoot(gltf.scene);
+      }
       mixer.current = new AnimationMixer(gltf.scene);
       const action = mixer.current.clipAction(gltf.animations[0]);
       action.play();
@@ -50,37 +74,29 @@ export function Dino() {
     return () => {
       if (mixer.current) {
         mixer.current.stopAllAction();
+        mixer.current.uncacheRoot(gltf.scene);
+        mixer.current = null;
       }
     };
-  }, [gltf.animations, gltf.scene]);
-
-  // useEffect(() => {
-  //   function onWindowResize(width: number) {
-  //     setSize(1);
-  //     console.log(size);
-  //   }
-
-  //   window.addEventListener('resize', () => onWindowResize(window.innerWidth));
-
-  //   return () => {
-  //     window.removeEventListener('resize', () => onWindowResize(window.innerWidth));
-  //   };
-  // }, []);
+  }, [gltf]);
 
   useFrame((state, delta) => {
     mixer.current?.update(delta);
   });
 
+  if (!gltf) return null; // 모델이 로드되지 않았을 때는 렌더링하지 않음
+
   return (
     <primitive
       onClick={() => {
         if (!isEnd) {
-          console.log('{ 대화 시작 }');
+          // console.log('{ 대화 시작 }');
+          setIsStart(true);
           setIsTalking(true);
         }
       }}
       object={gltf.scene}
-      scale={size}
+      scale={scale}
       position={[0, -0.4, 0]}
     />
   );

@@ -57,7 +57,7 @@ public class CommentsServiceTest extends ServiceTest {
         parents = parentsRepository.save(SUNKYOUNG.toParents());
         kids = kidsRepository.save(JIYEONG.toKids(parents));
         reports = reportsRepository.save(REPORTS_01.toReports(kids));
-        reportsUpdateService.createReportAsync(reports.getReportsId());
+        reportsUpdateService.createReportAsync(reports.getReportsId(), kids.getUuid().toString());
         boards = boardsRepository.save(BOARDS_01.toBoards(reports, parents));
     }
 
@@ -75,6 +75,7 @@ public class CommentsServiceTest extends ServiceTest {
                 () -> assertThat(findComments.getCommentsId()).isEqualTo(commentsId),
                 () -> assertThat(findComments.getCommentsContentKor()).isEqualTo(COMMENTS_01.getCommentsContentKor()),
                 () -> assertThat(findComments.getCommentsContentViet()).isNotNull(),
+                () -> assertThat(findComments.getCommentsContentPh()).isNotNull(),
                 () -> assertThat(findComments.getIsDeleted()).isEqualTo(0)
         );
     }
@@ -93,6 +94,26 @@ public class CommentsServiceTest extends ServiceTest {
                 () -> assertThat(findComments.getCommentsId()).isEqualTo(commentsId),
                 () -> assertThat(findComments.getCommentsContentKor()).isNotNull(),
                 () -> assertThat(findComments.getCommentsContentViet()).isEqualTo(COMMENTS_01.getCommentsContentViet()),
+                () -> assertThat(findComments.getCommentsContentPh()).isNotNull(),
+                () -> assertThat(findComments.getIsDeleted()).isEqualTo(0)
+        );
+    }
+
+    @Test
+    @DisplayName("(필리핀어) 답변 등록에 성공한다.")
+    void createCommentsPh() {
+        // when
+        CommentsResponseDto commentsResponseDto = commentsService.createComments(parents.getUuid(), createCommentsRequestDto(Language.ph));
+        Long commentsId = commentsResponseDto.commentsId();
+
+        // then
+        Comments findComments = commentsFindService.findByCommentsIdAndIsDeleted(commentsId);
+
+        assertAll(
+                () -> assertThat(findComments.getCommentsId()).isEqualTo(commentsId),
+                () -> assertThat(findComments.getCommentsContentKor()).isNotNull(),
+                () -> assertThat(findComments.getCommentsContentViet()).isNotNull(),
+                () -> assertThat(findComments.getCommentsContentPh()).isEqualTo(COMMENTS_01.getCommentsContentPh()),
                 () -> assertThat(findComments.getIsDeleted()).isEqualTo(0)
         );
     }
@@ -114,6 +135,7 @@ public class CommentsServiceTest extends ServiceTest {
                 () -> assertThat(findComments.getCommentsId()).isEqualTo(updateCommentsId),
                 () -> assertThat(findComments.getCommentsContentKor()).isEqualTo(COMMENTS_01.getCommentsContentKor()),
                 () -> assertThat(findComments.getCommentsContentViet()).isNotNull(),
+                () -> assertThat(findComments.getCommentsContentPh()).isNotNull(),
                 () -> assertThat(findComments.getIsDeleted()).isEqualTo(0)
         );
     }
@@ -121,7 +143,7 @@ public class CommentsServiceTest extends ServiceTest {
     @DisplayName("(베트남어) 답변 수정에 성공한다.")
     void updateCommentsViet() {
         // given
-        CommentsResponseDto commentsResponseDto = commentsService.createComments(parents.getUuid(), createCommentsRequestDto(Language.kor));
+        CommentsResponseDto commentsResponseDto = commentsService.createComments(parents.getUuid(), createCommentsRequestDto(Language.viet));
         Long commentsId = commentsResponseDto.commentsId();
 
         // when
@@ -134,6 +156,29 @@ public class CommentsServiceTest extends ServiceTest {
                 () -> assertThat(findComments.getCommentsId()).isEqualTo(updateCommentsId),
                 () -> assertThat(findComments.getCommentsContentKor()).isNotNull(),
                 () -> assertThat(findComments.getCommentsContentViet()).isEqualTo(COMMENTS_01.getCommentsContentViet()),
+                () -> assertThat(findComments.getCommentsContentPh()).isNotNull(),
+                () -> assertThat(findComments.getIsDeleted()).isEqualTo(0)
+        );
+    }
+
+    @Test
+    @DisplayName("(필리핀어) 답변 수정에 성공한다.")
+    void updateCommentsPh() {
+        // given
+        CommentsResponseDto commentsResponseDto = commentsService.createComments(parents.getUuid(), createCommentsRequestDto(Language.ph));
+        Long commentsId = commentsResponseDto.commentsId();
+
+        // when
+        CommentsResponseDto updateCommentsResponseDto = commentsService.updateComments(parents.getUuid(), commentsId, updateCommentsRequestDto(Language.ph));
+        Long updateCommentsId = updateCommentsResponseDto.commentsId();
+
+        // then
+        Comments findComments = commentsFindService.findByCommentsIdAndIsDeleted(updateCommentsId);
+        assertAll(
+                () -> assertThat(findComments.getCommentsId()).isEqualTo(updateCommentsId),
+                () -> assertThat(findComments.getCommentsContentKor()).isNotNull(),
+                () -> assertThat(findComments.getCommentsContentViet()).isNotNull(),
+                () -> assertThat(findComments.getCommentsContentPh()).isEqualTo(COMMENTS_01.getCommentsContentPh()),
                 () -> assertThat(findComments.getIsDeleted()).isEqualTo(0)
         );
     }
@@ -160,14 +205,22 @@ public class CommentsServiceTest extends ServiceTest {
     }
 
     private CommentsUpdateRequestDto updateCommentsRequestDto(Language language) {
-        return language.equals(Language.kor)
-                ? new CommentsUpdateRequestDto(COMMENTS_01.getCommentsContentKor(), Language.kor)
-                : new CommentsUpdateRequestDto(COMMENTS_01.getCommentsContentViet(), Language.viet);
+        CommentsUpdateRequestDto requestDto = null;
+        switch (language) {
+            case kor -> requestDto = new CommentsUpdateRequestDto(COMMENTS_01.getCommentsContentKor(), language);
+            case viet -> requestDto = new CommentsUpdateRequestDto(COMMENTS_01.getCommentsContentViet(), language);
+            case ph -> requestDto = new CommentsUpdateRequestDto(COMMENTS_01.getCommentsContentPh(), language);
+        }
+        return requestDto;
     }
 
     private CommentsRequestDto createCommentsRequestDto(Language language) {
-        return language.equals(Language.kor)
-                ? new CommentsRequestDto(1L, COMMENTS_01.getCommentsContentKor(), Language.kor)
-                : new CommentsRequestDto(1L, COMMENTS_01.getCommentsContentViet(), Language.viet);
+        CommentsRequestDto requestDto = null;
+        switch (language) {
+            case kor -> requestDto = new CommentsRequestDto(1L, COMMENTS_01.getCommentsContentKor(), language);
+            case viet -> requestDto = new CommentsRequestDto(1L, COMMENTS_01.getCommentsContentViet(), language);
+            case ph -> requestDto = new CommentsRequestDto(1L, COMMENTS_01.getCommentsContentPh(), language);
+        }
+        return requestDto;
     }
 }

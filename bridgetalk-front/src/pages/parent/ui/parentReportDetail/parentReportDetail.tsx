@@ -1,9 +1,9 @@
 import * as S from '@/styles/parent/parentReportDetail.style';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ParentReportDetailRecorder } from './parentReportDetailRecorder/parentReportDetailRecorder';
-import { BackButton } from '@/shared';
+import { BackButton, dateToString } from '@/shared';
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { getReportDetail } from '../../query';
+import { getReportDetail, getReportsReplyList } from '../../query';
 import { useReportStore } from '../../store';
 
 export function ParentReportDetail() {
@@ -17,6 +17,8 @@ export function ParentReportDetail() {
   const language = useReportStore((state) => state.language);
   const reports_UUID = useReportStore((state) => state.reports_UUID);
   const setResultPage = useReportStore((state) => state.setResultPage);
+  const resultPage = useReportStore((state) => state.resultPage);
+  const reportStore = useReportStore();
 
   // State
   const [report, setReport] = useState<any>('');
@@ -24,8 +26,9 @@ export function ParentReportDetail() {
 
   const dateWord = useMemo(
     () => ({
-      kor: ['년', '월', '일'],
-      viet: ['Năm', 'tháng', 'ngày'],
+      kor: ['.', '.', '.'],
+      viet: ['.', '.', '.'],
+      ph: ['.', '.', '.'],
     }),
     [],
   );
@@ -33,6 +36,7 @@ export function ParentReportDetail() {
     () => ({
       kor: '분석 리포트',
       viet: 'Báo cáo',
+      ph: '',
     }),
     [],
   );
@@ -41,6 +45,7 @@ export function ParentReportDetail() {
     () => ({
       kor: ['요약', '솔루션'],
       viet: ['Tóm tắt', 'Giải pháp'],
+      ph: ['Buod', 'Solusyon'],
     }),
     [],
   );
@@ -53,11 +58,14 @@ export function ParentReportDetail() {
           Number(params.reportsId),
           language,
         );
-
         setReport(data.data);
+
+        const data2: any = await getReportsReplyList(Number(params.reportsId), language);
+        reportStore.setReplys(data2.data.reportsCommentsList);
+
         setDate(data.data.createdAt.split('T')[0].split('-'));
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     }
 
@@ -73,7 +81,7 @@ export function ParentReportDetail() {
             .fill(0)
             .map((it, idx) => (
               <button
-                className={`menu__summary `}
+                className={`menu__summary ${idx === resultPage ? 'active' : ''}`}
                 onClick={() => {
                   setResultPage(idx);
                 }}
@@ -85,11 +93,10 @@ export function ParentReportDetail() {
         <div className="leftside">
           {report && (
             <>
-              <div className="title" style={{ fontFamily: language === 'kor' ? 'DNF' : 'Pretendard' }}>
+              <div className="title" style={{ fontFamily: language === 'kor' ? 'DNF' : 'Pretendard-Black' }}>
                 {date[0]}
                 {dateWord[language][0]} {date[1]}
-                {dateWord[language][1]} {date[2]}
-                {dateWord[language][2]} {title[language]}
+                {dateWord[language][1]} {date[2]} {title[language]}
               </div>
               <div className="content-container">
                 <Content
@@ -117,23 +124,49 @@ function Content({ reportsKeywords, reportsSummary, reportsSolution }: Props) {
   const resultPage = useReportStore((state) => state.resultPage);
   const language = useReportStore((state) => state.language);
 
+  const reportStore = useReportStore();
+
+  const none = useMemo(
+    () => ({
+      kor: '작성된 답글이 없습니다',
+      viet: 'Walang nakasulat na sagot',
+      ph: '',
+    }),
+    [],
+  );
+
   return (
     <>
       {resultPage === 0 ? (
         <div className="content">
           <S.Keywords>
             {reportsKeywords.map((keyword: any) => (
-              <div className="keyword" style={{ fontFamily: language === 'kor' ? 'DNF' : 'Pretendard' }}>
-                #{keyword.trim()}
-              </div>
+              <div className="keyword"># {keyword.trim()}</div>
             ))}
           </S.Keywords>
-          <S.Summary style={{ fontFamily: language === 'kor' ? 'DNF' : 'Pretendard' }}>{reportsSummary}</S.Summary>
+          <S.Summary>{reportsSummary}</S.Summary>
         </div>
       ) : (
-        <div className="solution" style={{ fontFamily: language === 'kor' ? 'DNF' : 'Pretendard' }}>
-          {reportsSolution}
-        </div>
+        <>
+          <div className="solution">{reportsSolution}</div>
+          <div className="replys__wrapper">
+            {reportStore.replys && reportStore.replys.length > 0 ? (
+              reportStore.replys.map((reply: any) => (
+                <div className="replys">
+                  <div className="replys-header">
+                    <div className="replys-header-writer">{reply.parentsNickname}</div>
+                    <div className="replys-header-date">{dateToString(reply.createdAt)}</div>
+                    <div className="replys-header-like">❤ {reply.likes}</div>
+                  </div>
+                  <div className="replys-body">{reply.commentsContent}</div>
+                  <hr />
+                </div>
+              ))
+            ) : (
+              <div className="replys-none">{none[language]}</div>
+            )}
+          </div>
+        </>
       )}
     </>
   );

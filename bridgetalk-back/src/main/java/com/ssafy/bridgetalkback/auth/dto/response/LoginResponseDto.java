@@ -1,5 +1,6 @@
 package com.ssafy.bridgetalkback.auth.dto.response;
 
+import com.ssafy.bridgetalkback.global.Language;
 import com.ssafy.bridgetalkback.kids.domain.Kids;
 import com.ssafy.bridgetalkback.parents.domain.Parents;
 import lombok.Builder;
@@ -12,7 +13,8 @@ public record LoginResponseDto(
         String userNickname,
         String userDino,
         String accessToken,
-        String refreshToken
+        String refreshToken,
+        Language language
 ) {
     public static LoginResponseDto fromParents(Parents parents, String accessToken, String refreshToken) {
         return LoginResponseDto.builder()
@@ -23,6 +25,7 @@ public record LoginResponseDto(
                 .userDino(parents.getParentsDino())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .language(parents.getLanguage())
                 .build();
     }
 

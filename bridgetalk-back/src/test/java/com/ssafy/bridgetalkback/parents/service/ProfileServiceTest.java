@@ -6,6 +6,7 @@ import com.ssafy.bridgetalkback.kids.domain.Kids;
 import com.ssafy.bridgetalkback.kids.exception.KidsErrorCode;
 import com.ssafy.bridgetalkback.kids.service.KidsFindService;
 import com.ssafy.bridgetalkback.parents.domain.Parents;
+import com.ssafy.bridgetalkback.parents.dto.request.DeleteProfileRequestDto;
 import com.ssafy.bridgetalkback.parents.dto.request.UpdateProfileRequestDto;
 import com.ssafy.bridgetalkback.parents.exception.ParentsErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,7 @@ public class ProfileServiceTest extends ServiceTest {
         @DisplayName("부모 프로필 삭제에 성공한다")
         void deleteParentsProfile() {
             // when
-            profileService.deleteProfile(parents.getUuid());
+            profileService.deleteProfile(createParentsDeleteProfileRequestDto());
 
             // then
             assertThatThrownBy(() -> parentsFindService.findParentsByUuidAndIsDeleted(parents.getUuid()))
@@ -92,7 +93,7 @@ public class ProfileServiceTest extends ServiceTest {
         @DisplayName("아이 프로필 삭제에 성공한다")
         void deleteKidsProfile() {
             // when
-            profileService.deleteProfile(kids.getUuid());
+            profileService.deleteProfile(createKidsDeleteProfileRequestDto());
 
             // then
             assertThatThrownBy(() -> kidsFindService.findKidsByUuidAndIsDeleted(kids.getUuid()))
@@ -109,5 +110,13 @@ public class ProfileServiceTest extends ServiceTest {
 
     private UpdateProfileRequestDto createUpdateProfileRequestDto() {
         return new UpdateProfileRequestDto("새로운 닉네임", "D3");
+    }
+
+    private DeleteProfileRequestDto createParentsDeleteProfileRequestDto() {
+        return new DeleteProfileRequestDto(parents.getUuid().toString(), SUNKYOUNG.getParentsPassword());
+    }
+
+    private DeleteProfileRequestDto createKidsDeleteProfileRequestDto() {
+        return new DeleteProfileRequestDto(kids.getUuid().toString(), JIYEONG.getKidsPassword());
     }
 }

@@ -9,11 +9,13 @@ import com.ssafy.bridgetalkback.auth.service.TokenReissueService;
 import com.ssafy.bridgetalkback.auth.service.TokenService;
 import com.ssafy.bridgetalkback.auth.utils.JwtProvider;
 import com.ssafy.bridgetalkback.boards.controller.BoardsController;
+import com.ssafy.bridgetalkback.boards.service.BoardsLikeService;
 import com.ssafy.bridgetalkback.boards.service.BoardsService;
 import com.ssafy.bridgetalkback.comments.controller.CommentsController;
+import com.ssafy.bridgetalkback.comments.service.CommentsLikeService;
+import com.ssafy.bridgetalkback.comments.service.CommentsListService;
 import com.ssafy.bridgetalkback.comments.service.CommentsService;
 import com.ssafy.bridgetalkback.boards.service.BoardsListService;
-import com.ssafy.bridgetalkback.boards.service.BoardsService;
 import com.ssafy.bridgetalkback.global.config.SecurityConfig;
 import com.ssafy.bridgetalkback.global.security.JwtAccessDeniedHandler;
 import com.ssafy.bridgetalkback.global.security.JwtAuthenticationEntryPoint;
@@ -23,7 +25,6 @@ import com.ssafy.bridgetalkback.letters.service.ClovaSpeechService;
 import com.ssafy.bridgetalkback.letters.service.LettersService;
 import com.ssafy.bridgetalkback.notification.controller.NotificationController;
 import com.ssafy.bridgetalkback.notification.controller.SseController;
-import com.ssafy.bridgetalkback.notification.domain.Notification;
 import com.ssafy.bridgetalkback.notification.service.NotificationService;
 import com.ssafy.bridgetalkback.notification.service.SseService;
 import com.ssafy.bridgetalkback.parentingInfo.controller.ParentingInfoController;
@@ -73,7 +74,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
         NotificationController.class,
         SseController.class,
         CommentsController.class,
-        ParentingInfoCrawlingController.class,
+        ParentingInfoCrawlingController.class
 })
 public abstract class ControllerTest {
     @Autowired
@@ -170,6 +171,15 @@ public abstract class ControllerTest {
 
     @MockBean
     protected SseService sseService;
+
+    @MockBean
+    protected BoardsLikeService boardsLikeService;
+
+    @MockBean
+    protected CommentsListService commentsListService;
+    @MockBean
+    protected CommentsLikeService commentsLikeService;
+
 
     protected String convertObjectToJson(Object data) throws JsonProcessingException {
         return objectMapper.writeValueAsString(data);

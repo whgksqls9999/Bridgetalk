@@ -15,16 +15,22 @@ public class ParentingInfo extends BaseEntity {
     private Long parentingInfoId;
 
     @Column(nullable = false)
-    private String title_kor;
+    private String titleKor;
 
     @Column(nullable = false)
-    private String title_viet;
+    private String titleViet;
+
+    @Column(nullable = false)
+    private String titlePh;
 
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String content_kor;
+    private String contentKor;
 
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String content_viet;
+    private String contentViet;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String contentPh;
 
     @Column(nullable = false, length = 300)
     private String link;
@@ -33,17 +39,20 @@ public class ParentingInfo extends BaseEntity {
     @Column(nullable = false, length = 20)
     private Category category;
 
-    private ParentingInfo(String title_kor, String title_viet, String content_kor, String content_viet, String link, Category category) {
-        this.title_kor = title_kor;
-        this.title_viet = title_viet;
-        this.content_kor = content_kor;
-        this.content_viet = content_viet;
+    private ParentingInfo(String titleKor, String titleViet, String titlePh, String contentKor, String contentViet,
+                          String contentPh, String link, Category category) {
+        this.titleKor = titleKor;
+        this.titleViet = titleViet;
+        this.titlePh = titlePh;
+        this.contentKor = contentKor;
+        this.contentViet = contentViet;
+        this.contentPh = contentPh;
         this.link = link;
         this.category = category;
     }
 
-    public static ParentingInfo createParentingInfo(String title_kor, String title_viet, String content_kor, String content_viet,
-                                                    String link, Category category) {
-        return new ParentingInfo(title_kor, title_viet, content_kor, content_viet, link, category);
+    public static ParentingInfo createParentingInfo(String titleKor, String titleViet, String titlePh, String contentKor, String contentViet,
+                                                    String contentPh, String link, Category category) {
+        return new ParentingInfo(titleKor, titleViet, titlePh, contentKor, contentViet, contentPh, link, category);
     }
 }

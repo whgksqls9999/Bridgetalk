@@ -12,11 +12,13 @@ interface Props {
 export function SelectCountry({ setPage }: Props) {
   const navigate = useNavigate();
 
-  const { email, password, name, nickname } = useSignupStore((state) => ({
+  const { email, password, name, nickname, country, setCountry } = useSignupStore((state) => ({
     email: state.email,
     password: state.password,
     name: state.name,
     nickname: state.nickname,
+    country: state.country,
+    setCountry: state.setCountry,
   }));
 
   const setErrorModalState = useErrorStore((state) => state.setErrorModalState);
@@ -28,11 +30,22 @@ export function SelectCountry({ setPage }: Props) {
           <img src={'assets/img/main/selectYourCountry.svg'} />
         </div>
         <div className="countrylist">
-          <button className="countrylist__taiwan">
-            Taiwan
-            <img src={'assets/img/main/commingSoon.svg'} />
+          <button
+            className={`countrylist__taiwan ${country === 'ph' ? 'active' : ''}`}
+            onClick={() => {
+              setCountry('ph');
+            }}
+          >
+            Philippines
           </button>
-          <button className="countrylist__vietnam">Vietnam</button>
+          <button
+            className={`countrylist__vietnam ${country === 'viet' ? 'active' : ''}`}
+            onClick={() => {
+              setCountry('viet');
+            }}
+          >
+            Vietnam
+          </button>
           <button className="countrylist__china">
             China
             <img src={'assets/img/main/commingSoon.svg'} />
@@ -52,7 +65,7 @@ export function SelectCountry({ setPage }: Props) {
         <button
           className="buttons__next"
           onClick={() => {
-            handleSignup(email, password, name, nickname, 'D1', setErrorModalState);
+            handleSignup(email, password, name, nickname, 'D1', country, setErrorModalState);
             navigate('/start');
           }}
         >

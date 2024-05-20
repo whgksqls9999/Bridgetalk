@@ -27,7 +27,7 @@ export const fill = (context: CanvasRenderingContext2D, startX: number, startY: 
   const startColor = [data[startPos], data[startPos + 1], data[startPos + 2], data[startPos + 3]];
   const stack = [[startX, startY]];
 
-  console.log('fill start');
+  // console.log('fill start');
 
   while (stack.length) {
     const [startX, startY] = stack.pop()!;
@@ -46,7 +46,7 @@ export const fill = (context: CanvasRenderingContext2D, startX: number, startY: 
     let reachRight = false;
 
     while (y < height && matchStartColor(data, pos, startColor)) {
-      console.log('paint');
+      // console.log('paint');
 
       colorPixel(data, pos, fillColor);
 

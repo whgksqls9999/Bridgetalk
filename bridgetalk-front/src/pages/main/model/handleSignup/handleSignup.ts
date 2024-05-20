@@ -7,6 +7,7 @@ export async function handleSignup(
   name: string,
   nickname: string,
   dino: string,
+  country: string,
   setErrorModalState: any,
 ) {
   try {
@@ -16,6 +17,7 @@ export async function handleSignup(
       parentsName: name,
       parentsNickname: nickname,
       parentsDino: dino,
+      language: country,
     });
   } catch (err) {
     if (err instanceof Error) {

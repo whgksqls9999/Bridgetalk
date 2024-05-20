@@ -84,7 +84,7 @@ public class ReportsService {
         for (Reports report : reports) {
             reportsList.add(ReportsListResponseDto.fromReports(report, language));
         }
-        log.info("{ ReportsService } : 아이속마음 리스트 조회 성공");
+        log.info("{ ReportsService } : 아이속마음 리스트 조회 성공, lang : {}", language);
         return reportsList;
     }
 
@@ -94,8 +94,9 @@ public class ReportsService {
         } else throw BaseException.type(KidsErrorCode.KIDS_NOT_FOUND);
 
         Reports reports = reportsFindService.findByReportsIdAndIsDeleted(reportsId);
-        log.info("{ ReportsService } : 아이속마음 상세 조회 성공");
-        List<VideoResponseDto> reportsVideoList = reportsVideoService.searchVideo(reports.getReportsKeywordsKor());
+        log.info("{ ReportsService } : 아이속마음 상세 조회 성공, lang : {}", language);
+        List<VideoResponseDto> reportsVideoList = new ArrayList<>();
+//        reportsVideoList = reportsVideoService.searchVideo(reports.getReportsKeywordsKor());
         log.info("{ ReportsVideoService } : 레포트 유튜브리스트 성공");
         return ReportsDetailResponseDto.fromReports(reports, reportsVideoList, language);
     }

@@ -1,13 +1,7 @@
-import { setToken } from '@/shared';
+import { errorCatch, setToken } from '@/shared';
 import { postProfileLogin } from '../../query';
 
-export async function handleProfileLogin(
-  uuid: string,
-  password: string,
-  userStore: any,
-  navigate: any,
-  navigatePath: string,
-) {
+export async function handleProfileLogin(uuid: string, password: string, userStore: any, setErrorStateModal: any) {
   try {
     const response = await postProfileLogin(uuid, password);
 
@@ -15,9 +9,13 @@ export async function handleProfileLogin(
       userStore.setUserDino(response.data.userDino);
       sessionStorage.setItem('dino', response.data.userDino);
       setToken(response.data.accessToken, response.data.refreshToken);
-      navigate(navigatePath);
+
+      return true;
     }
   } catch (err) {
-    console.log(err);
+    if (err instanceof Error) {
+      errorCatch(err, setErrorStateModal);
+    }
+    return false;
   }
 }

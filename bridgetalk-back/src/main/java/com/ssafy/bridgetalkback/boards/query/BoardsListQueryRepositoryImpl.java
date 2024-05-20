@@ -4,10 +4,12 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.bridgetalkback.boards.domain.BoardsSearchType;
+import com.ssafy.bridgetalkback.boards.dto.response.BoardsListResponseDto;
 import com.ssafy.bridgetalkback.boards.dto.response.CustomBoardsListResponseDto;
 import com.ssafy.bridgetalkback.boards.query.dto.BoardsListDto;
 import com.ssafy.bridgetalkback.boards.query.dto.QBoardsListDto;
 import com.ssafy.bridgetalkback.global.Language;
+import com.ssafy.bridgetalkback.parents.domain.Parents;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -29,11 +31,11 @@ public class BoardsListQueryRepositoryImpl implements BoardsListQueryRepository 
     @Override
     public CustomBoardsListResponseDto<BoardsListDto> getBoardsListOrderByTime(int page, BoardsSearchType boardSearchType,
                                                                                String searchWord, Language language) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 4);
         List<BoardsListDto> boardLists = query
                 .selectDistinct(createQBoardsListDto(language))
                 .from(boards)
-                .where(language.equals(Language.kor) ? searchKorea(boardSearchType, searchWord) : searchVietnam(boardSearchType, searchWord))
+                .where(searchLanguage(boardSearchType, searchWord, language))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(boards.createdAt.desc())
@@ -42,7 +44,7 @@ public class BoardsListQueryRepositoryImpl implements BoardsListQueryRepository 
         JPAQuery<Long> countQuery = query
                 .select(count(boards.boardsId))
                 .from(boards)
-                .where(language.equals(Language.kor) ? searchKorea(boardSearchType, searchWord) : searchVietnam(boardSearchType, searchWord));
+                .where(searchLanguage(boardSearchType, searchWord, language));
 
         return new CustomBoardsListResponseDto<>(PageableExecutionUtils.getPage(boardLists, pageable, countQuery::fetchOne));
     }
@@ -50,11 +52,11 @@ public class BoardsListQueryRepositoryImpl implements BoardsListQueryRepository 
     @Override
     public CustomBoardsListResponseDto<BoardsListDto> getBoardsListOrderByLikes(int page, BoardsSearchType boardSearchType,
                                                                                 String searchWord, Language language) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 4);
         List<BoardsListDto> boardLists = query
                 .selectDistinct(createQBoardsListDto(language))
                 .from(boards)
-                .where(language.equals(Language.kor) ? searchKorea(boardSearchType, searchWord) : searchVietnam(boardSearchType, searchWord))
+                .where(searchLanguage(boardSearchType, searchWord, language))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(boards.likes.desc())
@@ -63,19 +65,53 @@ public class BoardsListQueryRepositoryImpl implements BoardsListQueryRepository 
         JPAQuery<Long> countQuery = query
                 .select(count(boards.boardsId))
                 .from(boards)
-                .where(language.equals(Language.kor) ? searchKorea(boardSearchType, searchWord) : searchVietnam(boardSearchType, searchWord));
+                .where(searchLanguage(boardSearchType, searchWord, language));
 
         return new CustomBoardsListResponseDto<>(PageableExecutionUtils.getPage(boardLists, pageable, countQuery::fetchOne));
     }
 
-    private BooleanExpression searchKorea(BoardsSearchType boardSearchType, String searchWord) {
-        log.info(" { BoardsListQueryRepositoryImpl } : searchKorea"+boardSearchType);
+    @Override
+    public BoardsListResponseDto getMyBoardsListOrderByTime(Parents parents, Language language) {
+        List<BoardsListDto> boardLists = query
+                .selectDistinct(createQBoardsListDto(language))
+                .from(boards)
+                .where(boards.parents.eq(parents))
+                .orderBy(boards.createdAt.desc())
+                .fetch();
+
+        return new BoardsListResponseDto(boardLists);
+    }
+
+    @Override
+    public BoardsListResponseDto getMyBoardsListOrderByLikes(Parents parents, Language language) {
+        List<BoardsListDto> boardLists = query
+                .selectDistinct(createQBoardsListDto(language))
+                .from(boards)
+                .where(boards.parents.eq(parents))
+                .orderBy(boards.likes.desc())
+                .fetch();
+
+        return new BoardsListResponseDto(boardLists);
+    }
+
+    private BooleanExpression searchLanguage(BoardsSearchType boardSearchType, String searchWord, Language language) {
+        BooleanExpression booleanExpression = null;
+        switch (language) {
+            case kor -> booleanExpression = searchKor(boardSearchType, searchWord);
+            case viet -> booleanExpression = searchViet(boardSearchType, searchWord);
+            case ph -> booleanExpression = searchPh(boardSearchType, searchWord);
+        }
+        return booleanExpression;
+    }
+
+    private BooleanExpression searchKor(BoardsSearchType boardSearchType, String searchWord) {
+        log.info(" { BoardsListQueryRepositoryImpl } : searchKor - "+boardSearchType);
+        log.info(" { BoardsListQueryRepositoryImpl } : searchWord - "+searchWord);
         if (searchWord == null || searchWord.isEmpty()) {
             return null;
         } else {
             switch (boardSearchType) {
                 case TITLE -> {
-                    log.info(" { BoardsListQueryRepositoryImpl } : "+searchWord);
                     return boards.boardsTitleKor.contains(searchWord);
                 }
                 case CONTENT_AND_REPORTS_SUMMARY -> {
@@ -98,7 +134,9 @@ public class BoardsListQueryRepositoryImpl implements BoardsListQueryRepository 
         }
     }
 
-    private BooleanExpression searchVietnam(BoardsSearchType boardSearchType, String searchWord) {
+    private BooleanExpression searchViet(BoardsSearchType boardSearchType, String searchWord) {
+        log.info(" { BoardsListQueryRepositoryImpl } : searchViet - "+boardSearchType);
+        log.info(" { BoardsListQueryRepositoryImpl } : searchWord - "+searchWord);
         if (searchWord == null || searchWord.isEmpty()) {
             return null;
         } else {
@@ -126,6 +164,36 @@ public class BoardsListQueryRepositoryImpl implements BoardsListQueryRepository 
         }
     }
 
+    private BooleanExpression searchPh(BoardsSearchType boardSearchType, String searchWord) {
+        log.info(" { BoardsListQueryRepositoryImpl } : searchPh - "+boardSearchType);
+        log.info(" { BoardsListQueryRepositoryImpl } : searchWord - "+searchWord);
+        if (searchWord == null || searchWord.isEmpty()) {
+            return null;
+        } else {
+            switch (boardSearchType) {
+                case TITLE -> {
+                    return boards.boardsTitlePh.contains(searchWord);
+                }
+                case CONTENT_AND_REPORTS_SUMMARY -> {
+                    return boards.boardsContentPh.contains(searchWord).or(boards.reports.reportsSummaryPh.contains(searchWord));
+                }
+                case WRITER -> {
+                    return boards.parents.parentsNickname.contains(searchWord);
+                }
+                case REPORTS_KEYWORD -> {
+                    return boards.reports.reportsKeywordsPh.contains(searchWord);
+                }
+                case TITLE_AND_CONTENT_AND_REPORTS -> {
+                    return boards.boardsTitlePh.contains(searchWord).or(boards.boardsContentPh.contains(searchWord)
+                            .or(boards.reports.reportsSummaryPh.contains(searchWord)).or(boards.reports.reportsKeywordsPh.contains(searchWord)));
+                }
+                default -> {
+                    return null;
+                }
+            }
+        }
+    }
+
     private QBoardsListDto createQBoardsListDto(Language language) {
         QBoardsListDto boardsListDto = null;
 
@@ -136,6 +204,9 @@ public class BoardsListQueryRepositoryImpl implements BoardsListQueryRepository 
             case viet -> boardsListDto = new QBoardsListDto(boards.boardsId, boards.boardsTitleViet,
                     boards.boardsContentViet, boards.likes, boards.createdAt, boards.reports.reportsSummaryViet,
                     boards.reports.reportsKeywordsViet, boards.parents.parentsNickname);
+            case ph -> boardsListDto = new QBoardsListDto(boards.boardsId, boards.boardsTitlePh,
+                    boards.boardsContentPh, boards.likes, boards.createdAt, boards.reports.reportsSummaryPh,
+                    boards.reports.reportsKeywordsPh, boards.parents.parentsNickname);
         }
         return boardsListDto;
     }

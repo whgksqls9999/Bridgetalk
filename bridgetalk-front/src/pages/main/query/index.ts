@@ -5,3 +5,5 @@ export * from '@/pages/main/query/postProfileLogin/postProfileLogin';
 export * from '@/pages/main/query/postAddProfile/postAddProfile';
 export * from '@/pages/main/query/deleteDeleteProfile/deleteDeleteProfile';
 export * from '@/pages/main/query/getNicknameCheck/getNicknameCheck';
+export * from '@/pages/main/query/postAuthSend/postAuthSend';
+export * from '@/pages/main/query/postAuthVerify/postAuthVerify';

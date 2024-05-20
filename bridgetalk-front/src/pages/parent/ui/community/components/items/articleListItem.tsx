@@ -1,8 +1,11 @@
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as S from '@/styles/parent/articleListItem.style';
+
 
 export function ArticleListItem() {
   return (
+    <S.Container>
     <div className="articleListItem">
       <div className="articleListItem__main">
           <div className="articleListItem__main-title">우리 애 어캄</div>
@@ -20,5 +23,7 @@ export function ArticleListItem() {
         <div className="articleListItem__sub-date">08:19 Dec 10th 2023</div>
       </div>
     </div>
+    </S.Container>
+
   );
 }

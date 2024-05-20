@@ -21,7 +21,7 @@ export function PuzzlePage() {
       try {
         const response = await customAxios.get(`/puzzle/${id}`, {});
         setPuzzle(response.data.puzzleImageUrl);
-        console.log('API Response Status Code:', response.status); // 콘솔에 상태 코드 출력
+        // console.log('API Response Status Code:', response.status); // 콘솔에 상태 코드 출력
       } catch (error) {
         console.error('Failed to fetch puzzle data:', error);
       }
@@ -57,6 +57,14 @@ export function PuzzlePage() {
   return (
     <S.Container>
       <div className="puzzlePage">
+        <img
+          src="/assets/img/child/icon/toBack.svg"
+          alt=""
+          style={{ width: '10svh', position: 'fixed', top: '0', left: '0', margin: '5svh' }}
+          onClick={() => {
+            navigate('/stage');
+          }}
+        />
         <div className="puzzlePage__side">
           <img src={puzzle} alt="" />
           <span>

@@ -11,8 +11,6 @@ export async function handleTalkStart(setReply: any, setEmotion: any, setSubtitl
     setSubtitle(parsedData.subtitleValue);
     setReply(parsedData.audioValue);
   } catch (err) {
-    if (err instanceof Error) {
-      errorCatch(err, setErrorModalState);
-    }
+    throw err;
   }
 }

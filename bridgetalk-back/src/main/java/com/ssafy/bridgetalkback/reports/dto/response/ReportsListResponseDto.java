@@ -16,10 +16,25 @@ public record ReportsListResponseDto(
         LocalDateTime createdAt
 ) {
     public static ReportsListResponseDto fromReports(Reports report, Language language) {
+        if (language.equals(Language.viet)){
+            return ReportsListResponseDto.builder()
+                    .reportsId(report.getReportsId())
+                    .reportsSummary(report.getReportsSummaryViet())
+                    .reportsKeywords(report.getReportsKeywordsViet())
+                    .createdAt(report.getCreatedAt())
+                    .build();
+        } else if (language.equals(Language.ph)){
+            return ReportsListResponseDto.builder()
+                    .reportsId(report.getReportsId())
+                    .reportsSummary(report.getReportsSummaryPh())
+                    .reportsKeywords(report.getReportsKeywordsPh())
+                    .createdAt(report.getCreatedAt())
+                    .build();
+        }
         return ReportsListResponseDto.builder()
                 .reportsId(report.getReportsId())
-                .reportsSummary(language.equals(Language.kor) ? report.getReportsSummaryKor() : report.getReportsSummaryViet())
-                .reportsKeywords(language.equals(Language.kor) ? report.getReportsKeywordsKor() : report.getReportsKeywordsViet())
+                .reportsSummary(report.getReportsSummaryKor())
+                .reportsKeywords(report.getReportsKeywordsKor())
                 .createdAt(report.getCreatedAt())
                 .build();
     }
