@@ -89,7 +89,6 @@ module.exports = {
     /** CopyWebpackplugin: 정적 asset 파일 빌드시 복사 */
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'public/assets', to: 'assets/' },
         { from: 'public/@ffmpeg', to: '@ffmpeg/' },
         { from: 'public/814.ffmpeg.js', to: '814.ffmpeg.js' },
         { from: 'src/app/serviceWorker.js', to: '.' },
